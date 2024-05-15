@@ -3,22 +3,37 @@
 <head>
     <title>Easy Play</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    
     <script src="scripts/main.js"></script>
 </head>
 <body>
     <h1>Easy Play</h1>
+    <header>
+        <img src="Platzhalter.png">
+         <nav>
+             <ul>
+                 <li><a href="#">Startseite</a></li>
+                 <li><a href="#">Platzhalter 1</a></li>
+                 <li><a href="#">Platzhalter 2</a></li>
+                 <li><a href="#">Platzhalter 3</a></li>
+                 <li><a href="#">Platzhalter 4</a></li>
+             </ul>
+         </nav>
+     </header>
 
-    <div id="podcast-search">
-        <label for="search-title">Titel:</label>
-        <input type="text" name="Suchtext" id="search-title">
-        <button onclick="searchPodcasts()">Suche über fyyp</button>
-    </div>
+     <main>
 
-    <div id="status-message"></div>
+        <div id="podcast-search">
+            <label for="search-title">Titel:</label>
+            <input type="text" name="Suchtext" id="search-title">
+            <button onclick="searchPodcasts()">Suche über fyyp</button>
+        </div>
 
-    <div id="podcast-list"></div>
-    
+        <div id="status-message"></div>
+
+        <div id="podcast-list"></div>
+    </main>
 
     
 </body>
