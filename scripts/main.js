@@ -1,5 +1,9 @@
 "use strict";
-
+var userLang = navigator.language || navigator.userLanguage; 
+window.onload = function() {
+    console.log("onLoad Function");
+    fetchRecommendedPodcasts;
+  };
 function cloneImage(event) {
     const clickedImage = event.target;
     const clonedImage = clickedImage.cloneNode(true);
