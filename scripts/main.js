@@ -1,11 +1,14 @@
 "use strict";
-var userLang = navigator.language || navigator.userLanguage; 
+
+var userLang = navigator.language || navigator.userLanguage;
+
 window.onload = function() {
     console.log("onLoad Function");
     fetchRecommendedPodcasts();
     const resultsDiv = document.getElementById('podcast-list');
     resultsDiv.innerHTML = '<p>Loading recommended Podcasts...</p>';
-  };
+};
+
 function cloneImage(event) {
     const clickedImage = event.target;
     const clonedImage = clickedImage.cloneNode(true);
@@ -13,11 +16,9 @@ function cloneImage(event) {
 }
 
 function searchPodcasts() {
-
     const searchTitle = document.getElementById('search-title').value;
     const resultsDiv = document.getElementById('podcast-list');
     resultsDiv.innerHTML = '<p>Search is running...</p>';
-
     fetchPodcasts(searchTitle);
 }
 
@@ -30,45 +31,40 @@ async function fetchPodcasts(title) {
         const data = await response.json();
         insertSearchResults(data);
         console.log(data);
+    } catch (error) {
+        console.error('Error fetching podcasts:', error);
     }
-    catch(error) {
-        // Handle the error
-    }
-
 }
 
-async function fetchRecommendedPodcasts(title) {
+async function fetchRecommendedPodcasts() {
     let url = new URL('https://api.fyyd.de/0.2/search/podcast/');
     url.searchParams.append('title', makeid(1));
-
     console.log('URL:', url.href);
-
     try {
         const response = await fetch(url);
         const data = await response.json();
         insertSearchResults(data);
         console.log(data);
+    } catch (error) {
+        console.error('Error fetching recommended podcasts:', error);
     }
-    catch(error) {
-        // Handle the error
-    }
-
 }
 
 function insertSearchResults(data) {
     const resultsDiv = document.getElementById('podcast-list');
     resultsDiv.innerHTML = '';
-
-    //data.data.forEach(podcast => {
-    for (let podcast of data.data) {
+    data.data.forEach(podcast => {
         const podcastDiv = document.createElement('div');
         const titleDiv = document.createElement('h2');
         const descriptionDiv = document.createElement('p');
         const podcastImage = document.createElement('img');
         const podcastLink = document.createElement('a');
+
         titleDiv.textContent = podcast.title;
         descriptionDiv.textContent = podcast.description;
         podcastImage.src = podcast.layoutImageURL;
+        podcastImage.className = 'img'; // Added class for image styling
+
         podcastDiv.appendChild(titleDiv);
         podcastDiv.appendChild(podcastImage);
         podcastDiv.appendChild(descriptionDiv);
@@ -80,8 +76,9 @@ function insertSearchResults(data) {
         }
 
         resultsDiv.appendChild(podcastDiv);
-    };
+    });
 }
+
 function makeid(length) {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
