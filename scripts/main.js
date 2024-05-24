@@ -61,7 +61,7 @@ function insertSearchResults(data) {
         const podcastLink = document.createElement('a');
 
         titleDiv.textContent = podcast.title;
-        descriptionDiv.textContent = podcast.description;
+        descriptionDiv.textContent = truncateText(podcast.description, 40);
         podcastImage.src = podcast.layoutImageURL;
         podcastImage.className = 'img'; // Added class for image styling
 
@@ -77,6 +77,14 @@ function insertSearchResults(data) {
 
         resultsDiv.appendChild(podcastDiv);
     });
+}
+
+function truncateText(text, wordLimit) {
+    const words = text.split(' ');
+    if (words.length > wordLimit) {
+        return words.slice(0, wordLimit).join(' ') + '...';
+    }
+    return text;
 }
 
 function makeid(length) {
