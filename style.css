@@ -32,3 +32,9 @@ header * {
 header li {
     margin: 20px;
 }
+
+.grid{
+        display: grid; 
+        grid-template-rows:500px 1fr 200px; 
+        grid-template-columns:33% 33% 33%; 
+}
