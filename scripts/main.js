@@ -2,23 +2,21 @@
 var userLang = navigator.language || navigator.userLanguage; 
 window.onload = function() {
     console.log("onLoad Function");
-    fetchRecommendedPodcasts;
+    fetchRecommendedPodcasts();
+    const resultsDiv = document.getElementById('podcast-list');
+    resultsDiv.innerHTML = '<p>Loading recommended Podcasts...</p>';
   };
 function cloneImage(event) {
     const clickedImage = event.target;
     const clonedImage = clickedImage.cloneNode(true);
-
     clickedImage.parentNode.appendChild(clonedImage);
 }
 
 function searchPodcasts() {
 
     const searchTitle = document.getElementById('search-title').value;
-
-    document.getElementById('status-message').textContent = "";
-
     const resultsDiv = document.getElementById('podcast-list');
-    resultsDiv.innerHTML = '<p>Suche läuft...</p>';
+    resultsDiv.innerHTML = '<p>Search is running...</p>';
 
     fetchPodcasts(searchTitle);
 }
@@ -26,16 +24,28 @@ function searchPodcasts() {
 async function fetchPodcasts(title) {
     let url = new URL('https://api.fyyd.de/0.2/search/podcast/');
     url.searchParams.append('title', title);
+    console.log('URL:', url.href);
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        insertSearchResults(data);
+        console.log(data);
+    }
+    catch(error) {
+        // Handle the error
+    }
+
+}
+
+async function fetchRecommendedPodcasts(title) {
+    let url = new URL('https://api.fyyd.de/0.2/search/podcast/');
+    url.searchParams.append('title', makeid(1));
 
     console.log('URL:', url.href);
 
     try {
         const response = await fetch(url);
-
-        document.getElementById('status-message').textContent = response.status + ': ' + response.statusText;
-
         const data = await response.json();
-
         insertSearchResults(data);
         console.log(data);
     }
@@ -71,4 +81,15 @@ function insertSearchResults(data) {
 
         resultsDiv.appendChild(podcastDiv);
     };
+}
+function makeid(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
 }
