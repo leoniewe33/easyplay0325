@@ -134,7 +134,12 @@ main{
     }
     
 }
-
+.podcast-search{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
 .grid {
     display: grid;
     grid-template-rows: 1fr 1fr 1fr; 
