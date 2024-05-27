@@ -1,40 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Easy Play</title>
-    <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="style.css">
-    
-    <script src="scripts/main.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <h1>Easy Play</h1>
-    <header>
-        <img src="Platzhalter.png">
-         <nav>
-             <ul>
-                 <li><a href="#">Startseite</a></li>
-                 <li><a href="#">Platzhalter 1</a></li>
-                 <li><a href="#">Platzhalter 2</a></li>
-                 <li><a href="#">Platzhalter 3</a></li>
-                 <li><a href="#">Platzhalter 4</a></li>
-             </ul>
-         </nav>
-     </header>
+    <header class="header">
+        <div class="header-container">
+            <div class="header-logo">
+                <a href="index.html">
+                    <img src="audio-waves.png" alt="Logo">
+                </a>
+            </div>
+            <span class="header-title">Easy Play</span>
 
-     <main>
-
-        <div id="podcast-search">
-            <label for="search-title">Titel:</label>
-            <input type="text" name="Suchtext" id="search-title">
-            <button onclick="searchPodcasts()">Suche über fyyp</button>
+            <nav class="header-nav">
+                <ul class="nav-list">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="">Favoriten</a></li>
+                    <li><a href="">Einstellungen</a></li>
+                    <li><a href="">Hilfe</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button id="searchButton" class="search-button">
+                    <span class="material-icons">search</span>
+                </button>
+                <button id="menuButton" class="menu-button">
+                    <span class="material-icons">menu</span>
+                </button>
+            </div>
         </div>
-
-        <div id="status-message"></div>
-
-        <div id="podcast-list"></div>
+    </header>
+    <div class="drawer" id="drawer">
+        <nav class="drawer-nav">
+            <ul class="drawer-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="">Favoriten</a></li>
+                <li><a href="">Einstellungen</a></li>
+                <li><a href="">Hilfe</a></li>
+            </ul>
+        </nav>
+    </div>
+    <main class="layout-content">
+        <div class="Page-content">
+            <div id="podcast-search">
+                <label for="search-title">Titel:</label>
+                <input type="text" name="Suchtext" id="search-title">
+                <button onclick="searchPodcasts()">Suche über fyyp</button>
+            </div>
+            <div id="status-message"></div>
+            <div id="podcast-list"></div>
+        </div>
     </main>
-
-    
+    <script>
+        document.getElementById('menuButton').addEventListener('click', function() {
+            document.body.classList.toggle('drawer-open');
+        });
+    </script>
 </body>
 </html>
