@@ -30,6 +30,13 @@ body {
 }
 
 
+.header-title{
+    align-items: center;
+    font-size:large;
+    
+
+}
+
 .header-nav {
     display: none;
 }
