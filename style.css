@@ -1,34 +1,131 @@
-header img {
-    height: 80px;
-    
-}
 body {
-    height: 125vh;
-    /*background-image: url('https://codetheweb.blog/assets/img/posts/style-a-navigation-bar-css/background.jpg');*/
-    background-size: cover;
-    font-family: sans-serif;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
 }
 
-header {
-    color: black;
-    background-color: beige;
+
+
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    z-index: 1000;
+}
+
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header-logo img {
+    height: 40px;
+}
+
+
+.header-title{
+    align-items: center;
+    font-size:large;
+    
+
+}
+
+.header-nav {
+    display: none;
+}
+
+
+.header-nav .nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+.header-nav .nav-list li {
+    margin-left: 20px;
+}
+
+.header-nav .nav-list li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+
+
+.header-actions {
+    display: flex;
+    align-items: center;
+}
+
+
+.header-actions .search-button,
+.header-actions .menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    margin-left: 20px;
+    color: #333;
+}
+
+
+
+.drawer {
+    display: none;
+    flex-direction: column;
+    background-color: #fff;
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    height: 80px;
-}
-main {
-    top:100px;
-    left: 0;
-    right: 0;
-    height: 40px;
-    position: relative;
+    width: 250px;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    padding-top: 60px;
+    border-right: 1px solid #ddd;
 }
 
-header * {
-    display: inline;
+.drawer .drawer-nav .drawer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
-header li {
-    margin: 20px;
+
+
+.drawer .drawer-nav .drawer-list li {
+    padding: 15px 20px;
+}
+
+.drawer .drawer-nav .drawer-list li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+
+body.drawer-open .drawer {
+    display: flex;
+}
+
+
+@media (min-width: 990px) {
+    .header-nav {
+        display: block;
+    }
+    .header-actions .menu-button {
+        display: none;
+    }
+    .drawer {
+        display: none !important;
+    }
 }
