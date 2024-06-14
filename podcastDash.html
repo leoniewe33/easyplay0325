@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Podcast Details</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="scripts/main.js"> </script>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-container">
+            <div class="header-logo">
+                <a href="index.html">
+                    <img src="audio-waves.png" alt="Logo">
+                </a>
+            </div>
+            <span class="header-title">Easy Play</span>
+
+            <nav class="header-nav">
+                <ul class="nav-list">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="">Favourites</a></li>
+                    <li><a href="">Settings</a></li>
+                    <li><a href="">Help</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button id="searchButton" class="search-button">
+                    <span class="material-icons">search</span>
+                </button>
+                <button id="menuButton" class="menu-button">
+                    <span class="material-icons">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="drawer" id="drawer">
+        <nav class="drawer-nav">
+            <ul class="drawer-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="">Favourites</a></li>
+                <li><a href="">Settings</a></li>
+                <li><a href="">Help</a></li>
+            </ul>
+        </nav>
+    </div>
+    <main class ="layout-content">
+        <div class="Page-content podcastDashPage">
+            <h1 id="podcast-title" class="podcast-title-dash"></h1>
+            <img id="podcast-image" class="podcast-image-dash" src="" alt="Podcast Image">
+            <div class="episode-info" id="episode-info"></div>
+            <div class="play-button" id="play-button">
+                <span class="material-icons">play_circle_filled</span>
+            </div>
+
+            <div class="audio-player" id="audio-player-container">
+                <audio id="audio-player" controls>
+                    <source id="audio-source" src="" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+            <p id="podcast-description" class="description-dash"></p>
+            <div id="podcast-summary" class="summary-dash"></div>
+        </div>
+    </main>
+    <script>
+        document.getElementById('menuButton').addEventListener('click', function() {
+            document.body.classList.toggle('drawer-open');
+        });
+          document.addEventListener('click', function(event) {
+            var drawer = document.getElementById('drawer');
+            var menuButton = document.getElementById('menuButton');
+
+            if(!drawer.contains(event.target) && !menuButton.contains(event.target)) {
+                document.body.classList.remove('drawer-open');
+            }
+        });
+
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                title: params.get('title'),
+                episode: params.get('episode'),
+                date: params.get('date'),
+                description: params.get('description'),
+                image: params.get('image'),
+                audio: params.get('audio'),
+                summary: params.get('summary')
+
+
+            };
+        }
+
+    
+        function setPodcastDetails() {
+            const podcastDetails = getQueryParams();
+            document.getElementById('podcast-title').textContent = podcastDetails.title;
+            document.getElementById('episode-info').textContent = `Episode ${podcastDetails.episode} - ${podcastDetails.date}`;
+            document.getElementById('podcast-description').textContent = podcastDetails.description;
+            document.getElementById('podcast-image').src = podcastDetails.image;
+            document.getElementById('audio-source').src = podcastDetails.audio;
+            document.getElementById('audio-player').load();
+            document.getElementById('podcast-summary').innerHTML = podcastDetails.summary;
+        }
+
+        window.onload = setPodcastDetails;
+
+        document.getElementById('play-button').addEventListener('click', function() {
+            document.getElementById('audio-player-container').classList.toggle('visible');
+            document.getElementById('audio-player').play();
+        });
+
+        
+    </script>
+
+</body>
+</html>

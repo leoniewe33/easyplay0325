@@ -6,7 +6,7 @@ window.onload = function() {
     console.log("onLoad Function");
     fetchRecommendedPodcasts();
     const resultsDiv = document.getElementById('podcast-list');
-    resultsDiv.innerHTML = '<p>Loading recommended Podcasts...</p>';
+    resultsDiv.innerHTML = '<p class="loading-message">Loading recommended Podcasts...</p>';
 };
 
 function cloneImage(event) {
@@ -33,6 +33,8 @@ async function fetchPodcasts(title) {
         console.log(data);
     } catch (error) {
         console.error('Error fetching podcasts:', error);
+        document.getElementById('podcast-list').innerHTML = '<p>Error fetching podcasts. Please try again later.</p>';
+
     }
 }
 
@@ -47,6 +49,8 @@ async function fetchRecommendedPodcasts() {
         console.log(data);
     } catch (error) {
         console.error('Error fetching recommended podcasts:', error);
+        document.getElementById('podcast-list').innerHTML = '<p>Error fetching recommended podcasts. Please try again later.</p>';
+
     }
 }
 
@@ -69,11 +73,9 @@ function insertSearchResults(data) {
         podcastDiv.appendChild(podcastImage);
         podcastDiv.appendChild(descriptionDiv);
 
-        if (podcast.htmlURL) {
-            podcastLink.href = podcast.htmlURL;
-            podcastLink.textContent = "Zum Podcast";
-            podcastDiv.appendChild(podcastLink);
-        }
+        podcastLink.href = `podcastDash.html?title=${encodeURIComponent(podcast.title)}&description=${encodeURIComponent(podcast.description)}&image=${encodeURIComponent(podcast.layoutImageURL)}`;
+        podcastLink.textContent = "Zum Podcast";
+        podcastDiv.appendChild(podcastLink);
 
         resultsDiv.appendChild(podcastDiv);
     });
