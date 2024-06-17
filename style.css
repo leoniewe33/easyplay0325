@@ -128,9 +128,9 @@ main{
 .podcast-search {
     width:100%;
     display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
     display: none;
+    margin-bottom: 20px;
+
 }
 .podcast-search button {
     font-size: 16px;
@@ -151,10 +151,11 @@ main{
 
 .grid {
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr; 
-    grid-template-columns: 33% 33% 33%;
-    gap: 10px; 
-    padding: 20px; 
+    grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 10px;
+    padding: 20px;
+    width: 100%;
 }
 
 
@@ -180,10 +181,12 @@ main{
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 10px 10px 10px;
+    padding: 20px 20px 10px 10px;
 }
 .podcast-title-dash {
     margin-top: 0px;
+    align-items: center;
+    justify-content: center;
     
 }
 
@@ -239,39 +242,11 @@ main{
     .drawer {
         display: none;
     }
+}
+
+@media (min-width: 591px) {
     .grid div {
         font-size: 14px;
         padding: 5px;
     }
-    
-   
-
 }
-
-@media (min-width: 591px) and (max-width: 989px){
-   
-    .grid {
-        grid-template-columns: 50% 50%;
-    }
-    .grid div {
-        font-size: 14px;
-        padding: 5px;
-    }
-    
-   
-
-    
-}
-
-@media (max-width: 590px) {
-    
-    .grid div {
-        font-size: 12px;
-        padding: 5px;;
-    }
-    .grid {
-        grid-template-columns: 100%;
-    }
-   
-}
-
