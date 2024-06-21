@@ -62,7 +62,7 @@
 
             <div class="audio-player" id="audio-player-container">
                 <audio id="audio-player" controls>
-                    <source id="audio-source" src="" type="audio/mpeg">
+                    <source id="audio-source">
                     Your browser does not support the audio element.
                 </audio>
             </div>
@@ -89,6 +89,7 @@
         function getQueryParams() {
             const params = new URLSearchParams(window.location.search);
             return {
+                id: params.get('id'),
                 title: params.get('title'),
                 episode: params.get('episode'),
                 date: params.get('date'),
@@ -105,12 +106,14 @@
         function setPodcastDetails() {
             const podcastDetails = getQueryParams();
             document.getElementById('podcast-title').textContent = podcastDetails.title;
-            document.getElementById('episode-info').textContent = `Episode ${podcastDetails.episode} - ${podcastDetails.date}`;
+            document.getElementById('episode-info').textContent = `Episode 1`;
+            //Episode ${podcastDetails.episode} - ${podcastDetails.date}
             document.getElementById('podcast-description').textContent = podcastDetails.description;
             document.getElementById('podcast-image').src = podcastDetails.image;
-            document.getElementById('audio-source').src = podcastDetails.audio;
-            document.getElementById('audio-player').load();
+            document.getElementById('audio-source').src = "";
+            
             document.getElementById('podcast-summary').innerHTML = podcastDetails.summary;
+            fetchAudio(podcastDetails.id)
         }
 
         window.onload = setPodcastDetails;
@@ -119,6 +122,27 @@
             document.getElementById('audio-player-container').classList.toggle('visible');
             document.getElementById('audio-player').play();
         });
+
+        async function fetchAudio(id) {
+            let url = new URL('https://api.fyyd.de/0.2/podcast/episodes');
+            url.searchParams.append('podcast_id', getQueryParams().id);
+            url.searchParams.append('count', '5');
+            
+            console.log('URL:', url.href);
+            try {
+            const response = await fetch(url);
+            const data = await response.json();
+            console.log(data.data.episodes[0].enclosure);
+            const audiolink = data.data.episodes[0].enclosure;
+            document.getElementById('audio-source').src = audiolink;
+            console.log('src:' + document.getElementById('audio-source').src)
+            document.getElementById('audio-player').load();
+            } catch (error) {
+            console.error('Error fetching podcasts:', error);
+            document.getElementById('podcast-list').innerHTML = '<p>Error fetching podcasts. Please try again later.</p>';
+
+            }
+}
 
         
     </script>
