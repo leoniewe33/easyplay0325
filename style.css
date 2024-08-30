@@ -1,17 +1,20 @@
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
-
-
-
+/*Allgemein*/
 .header {
     position: fixed;
     top: 0;
     width: 100%;
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+    /*border-bottom: 1px solid #797272;*/
     z-index: 1000;
 }
 
@@ -20,11 +23,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
+    padding: 0px 20px;
     max-width: 1200px;
     margin: 0 auto;
 }
-
+/*Hilfe Seite*/
+.header-help {
+    padding: 10px 20px;
+}
+/*Allgemein*/
 .header-logo img {
     height: 40px;
 }
@@ -33,8 +40,6 @@ body {
 .header-title{
     align-items: center;
     font-size:large;
-    
-
 }
 
 .header-nav {
@@ -79,7 +84,6 @@ body {
 }
 
 
-
 .drawer {
     display: none;
     flex-direction: column;
@@ -101,10 +105,17 @@ body {
     margin: 0;
 }
 
-
 .drawer .drawer-nav .drawer-list li {
     padding: 15px 20px;
 }
+.drawer .drawer-nav .drawer-list li:hover {
+    background-color: #474846; 
+
+}
+.drawer .drawer-nav .drawer-list li:hover a{
+    color: #faf5f5;
+}
+
 
 .drawer .drawer-nav .drawer-list li a {
     text-decoration: none;
@@ -112,59 +123,252 @@ body {
     display: block;
 }
 
-
 body.drawer-open .drawer {
     display: flex;
+}
+
+.close-button {
+    display: block;
+    margin: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    margin-top: -45px;
+    margin-right: -160px;
 }
 
 main{
     margin-top: 90px;
     display: flex;
-    justify-content: center;
     padding: 20px;
     width: 100%;
+    background-color: white;
+    flex: 1;
+    border-bottom: 1px solid #797272;
+}
+
+/*Hilfe*/
+.help-content {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    padding-bottom: 60px;
+    
 }
 
 .podcast-search {
-    width:100%;
     display: flex;
     display: none;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    justify-content: center;
+
 
 }
-.podcast-search button {
-    font-size: 16px;
-    border: none;
+
+.podcast-search input[type="text"] {
+    height: 20px;
+    border: 2px solid grey;
+    padding: 0 10px;
+    outline: none;
+
+}
+.podcast-search input[type="text"]:focus {
+    border: 2px solid black;
+
+}
+
+.search-bar {
     border-radius: 4px;
-    background-color: #000204;
-    color: white;
-    margin-left: 10px;
-    cursor: pointer;
+    font-size: 14px;
+    
+
 }
 
+.podcast-search button {
+    padding: 0 10px;
+    font-size: 14px;
+    height: 24px;
+    border-radius: 4px;
+    background-color: white;
+    color: black;
+    margin-left: 5px;
+    cursor: pointer;
+    border: 2px solid grey;
+
+}
+.podcast-search button:focus {
+    border: 2px solid black;
+    
+}
+/*Generelle Nachricht zum Laden von Podcasts (Einheitlich)*/
 .loading-message {
-    text-align: center;
     margin-top: 0px;
     width: 100%;
+    align-items: center;
+    justify-content: center;
 }
 
+.suche {
+    padding-left:100px;
+}
 
+.unterüberschrift {
+    width: 100%;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/*Aufteilung der Podcasts*/
 .grid {
     display: grid;
-    grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 10px;
+   /* grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
+    ;*/
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
     width: 100%;
+    grid-auto-flow: column;   
+    grid-auto-columns: minmax(200px, 1fr); 
+    overflow-x: auto;   
+    overflow-y: hidden;
+    justify-items: start; /* Elemente im Grid linksbündig ausrichten */
+    grid-auto-flow: column;
+    max-width: fit-content;
+    
+    
 }
-
-
 
 
 .grid div {
-    border: 1px solid #1d1616;
+    /*padding: 0px;*/
     text-align: center;
+    border-radius: 5px;
+    height: 100%;
+    /*display: flex;*/
+    transition: transform 0.3s ease;
+
 }
 
+.grid img {
+    border-radius: 1rem;
+    aspect-ratio: 1 / 1;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.3s ease; /* Sanfte Übergänge bei Hover */
+    cursor: pointer; 
+    overflow: hidden; /* Verhindert, dass das Bild außerhalb des Containers sichtbar ist */
+    display: inline-block;
+    
+
+}
+
+.grid h4 {
+    transition: transform 0.3s ease; 
+}
+
+
+.grid div:hover img,
+.grid div:hover h4 {
+    transform: scale(1.1);
+}
+
+
+.fav-div img {
+    height: 200px; 
+    object-fit: cover; 
+    border-radius: 1rem;
+}
+
+.fav-div{
+    
+    display: grid;
+   /* grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
+    ;*/
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    grid-auto-flow: column;   
+    grid-auto-columns: minmax(200px,200px); 
+    overflow-x: auto;   
+    overflow-y: hidden;
+    justify-items: start; 
+    grid-auto-flow: column;
+    max-width: fit-content;
+    transition: transform 0.3s ease;
+}
+
+.fav-div img{
+    transition: transform 0.3s ease;
+}
+.fav-div h4 {
+    transition: transform 0.3s ease;
+}
+
+.fav-div div:hover img,
+.fav-div div:hover h4 {
+    transform: scale(1.1);
+}
+
+.favorites-fav  {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: auto;
+    gap: 20px;
+    width: 100%;
+    row-gap: 40px;
+    padding: 20px;
+
+    
+   
+}
+.favorites-fav div {
+    border: 1px solid #0b0b0b;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    background-color: white;
+
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  
+}
+.favorites-fav img {
+    border-radius: 1rem;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+
+
+    width: 100%; 
+    max-width: 200px; 
+    height: auto; 
+    
+
+}
+
+
+.episode-dashboard {
+    text-align: left;
+    width: 100%;
+    padding-bottom: 50px;
+
+
+}
+
+.dash-search-row{
+    width: 100%;
+}
 
 .img {
     width: 100%;
@@ -179,17 +383,40 @@ main{
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 20px 10px 10px;
+    width: auto;
+    padding-bottom: 60px;
+    
+}
+
+.podcasts-details-left {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.placeholder {
+    width: 15%;
 }
 .podcast-title-dash {
     margin-top: 0px;
     align-items: center;
     justify-content: center;
+   
     
 }
+#fav-btn-image {
+    padding-left: 30px;
+}
 
-
-
+.button-remove {
+    padding: 10px 20px; /* Innenabstand für größere Klickfläche */
+    border: 1px solid rgb(226, 222, 222); 
+    background-color: rgb(226, 222, 222);
+    color: black; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    margin: 4px;
+}
 .play-button {
     cursor: pointer;
     display: flex;
@@ -198,20 +425,83 @@ main{
     margin: 10px 0;
     font-size: 2em;
 }
-
-.audio-player {
-    display: none;
-    margin-top: 20px;
+.episode-container {
+    margin-bottom: 10px; 
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    background-color: rgb(226, 222, 222);
+    color: black;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.3s;
 }
+
+.episode-button {
+    padding: 5px;
+    border: none;
+    background-color: rgb(226, 222, 222);
+   
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.episode-play-icon {
+    margin-right: 20px;
+}
+.episode-title {
+    flex: 1;
+}
+.episode-time {
+    margin-left: auto; /* Schiebt die Zeit ans Ende des flex-Containers */
+    font-size: 14px;
+    color: grey;
+}
+
+.episode-description {
+    margin-left: 20px;
+    display: none;
+    padding-bottom: 20px;
+    
+
+}
+.audio-hidden {
+    display: none;
+    
+}
+.audio-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    padding: 10px;
+    box-sizing: border-box;
+    color: #fff;
+    text-align: center;
+    z-index: 1000px;
+}
+
+audio {
+    width: 100%;
+    outline: none;
+}
+
+
 
 .visible {
     display: block;
 }
 .podcast-image-dash {
-    width: 100%;
+   /* width: 100%;*/
     max-width: 600px;
-    height: auto;
+    height: 300px;
     margin-bottom: 20px;
+    border-radius: 1rem;
 }
 
 .episode-info {
@@ -219,6 +509,13 @@ main{
     margin-bottom: 10px;
 }
 
+.dash-left {
+    justify-content: center;
+}
+.podcast-details-right {
+    text-align: center;
+
+}
 .description-dash {
     font-size: 1em;
     margin-bottom: 20px;
@@ -229,7 +526,92 @@ main{
     line-height: 1.5;
 }
 
+.button-design {
+    font-size: 15px;
+    border-radius: 0.5rem;
+    border-color: black;
+    background-color: white;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
 
+
+}
+
+
+
+#categoryContainer {
+    padding: 10px;
+    gap: 20px;
+    margin-bottom: 20px;
+   
+    
+}
+    
+.category-button {
+    padding: 10px 20px; 
+    border: 1px solid black; 
+    background-color: #FFF; 
+    color: black; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; /* Sanfte Übergänge bei Hover */
+    margin: 4px;
+    
+}
+
+.category-button:hover {
+    background-color: #474846; 
+    color: #FFF; 
+    
+}
+
+.category-button:active {
+    background-color: black; 
+    
+}
+
+
+
+a:any-link {
+    color: black;
+    text-decoration: none;
+}
+
+
+.footer {
+    display: flex;                 
+    justify-content: space-between; 
+    align-items: center;           
+    padding: 20px;                 
+    background-color: white;        
+    color: black;                  
+}
+
+.footer-section {
+    flex: 1;                       
+    text-align: center;            
+}
+
+.footer-left {
+    text-align: left;              
+}
+
+.footer-right {
+    text-align: right;             
+}
+
+.footer a {
+    color: black;                  
+    text-decoration: none;         
+    margin: 0 10px;               
+}
+
+.footer a:hover {
+    text-decoration: underline;    
+}
+
+/*Bildschirmanpassung*/
 @media (min-width: 990px) {
     .header-nav {
         display: block;
@@ -240,11 +622,305 @@ main{
     .drawer {
         display: none;
     }
+
+    .img {
+        margin-right: 20%;
+    }
+    .podcast-details-right {
+        margin-right: 120px;
+    }
+    .podcast-title-dash {
+        margin-top: 0px;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-left: 5%;
+        margin-top: 20px;
+    }
+    .description-dash {
+        width: 100%;
+        margin-left: 5%;
+    }
+    
+    .podcastDashPage{
+        margin: 0;
+        padding: 0;
+        gap: 0.5em;
+        list-style: none;
+        font: 1.2rem sans-serif;
+        
+
+        display: block;
+        height: 100%;
+        padding: 0.2em 0.5em;
+        text-decoration: none;
+        box-sizing: border-box;
+        border-radius: 5px;
+        
+        text-align: center;
+        align-content: center;
+    }
+
+    
+    .podcastDashPage.flex {
+        display: flex;
+        flex: 1 0 1em;
+    }
+
+    .podcast-image-dash {
+        margin-top: -20px;
+        margin-bottom: 20px;
+        margin-right: 5%;
+        margin-left: 10%;
+    
+    }
+
+    .episode-dashboard {
+        margin-top: 3%;
+    }
+    
 }
 
-@media (min-width: 591px) {
-    .grid div {
-        font-size: 14px;
-        padding: 5px;
+@media (min-width: 377px) and (max-width: 591px) {
+    .favorites-fav  {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: auto;
+        gap: 20px;
+        width: 100%;
+        row-gap: 40px;
+        padding: 20px;
+    
+        
+       
     }
+}
+@media (min-width: 592px) and (max-width: 989px) {
+    .favorites-fav  {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: auto;
+        gap: 20px;
+        width: 100%;
+        row-gap: 40px;
+        padding: 20px;
+    }
+}
+@media (max-width: 376px) {
+    .favorites-fav  {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-auto-rows: auto;
+        gap: 20px;
+        width: 100%;
+        row-gap: 40px;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 989px) {
+    .dash-left {
+        display: flex;
+        justify-content: center; 
+        align-items: center; 
+        margin-bottom: 60px; 
+        text-align: center; 
+        width: 100%;
+    }
+
+    .podcast-image-dash {
+        max-width: 80%;
+        height: auto; 
+        margin: 0 auto; 
+        display: block; 
+    }
+}
+
+/*Animation*/
+
+@keyframes one {
+  0% {
+    transform: scaleY(0.7);
+  }
+  20% {
+    transform: scaleY(1.5);
+  }
+  40% {
+    transform: scaleY(0.3);
+  }
+  60% {
+    transform: scaleY(1.1);
+  }
+  80% {
+    transform: scaleY(0.8);
+  }
+  100% {
+    transform: scaleY(0.7);
+  }
+}
+
+@keyframes two {
+  0% {
+    transform: scaleY(1);
+  }
+  20% {
+    transform: scaleY(0.6);
+  }
+  40% {
+    transform: scaleY(1.2);
+  }
+  60% {
+    transform: scaleY(0.5);
+  }
+  80% {
+    transform: scaleY(1.4);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes three {
+    0% {
+      transform: scaleY(1.4);
+    }
+    15% {
+      transform: scaleY(2.5); /* Peak occurs earlier at 15% */
+    }
+    30% {
+      transform: scaleY(0.9);
+    }
+    45% {
+      transform: scaleY(1.8);
+    }
+    60% {
+      transform: scaleY(0.7);
+    }
+    75% {
+      transform: scaleY(1.3);
+    }
+    100% {
+      transform: scaleY(1.4);
+    }
+  }
+  
+  @keyframes four {
+    0% {
+      transform: scaleY(1.2);
+    }
+    30% {
+      transform: scaleY(1.7);
+    }
+    50% {
+      transform: scaleY(2.5); /* Peak occurs at 50% */
+    }
+    70% {
+      transform: scaleY(0.4);
+    }
+    85% {
+      transform: scaleY(1.6);
+    }
+    100% {
+      transform: scaleY(1.2);
+    }
+  }
+  
+  @keyframes five {
+    0% {
+      transform: scaleY(0.6);
+    }
+    25% {
+      transform: scaleY(1.3);
+    }
+    55% {
+      transform: scaleY(0.8);
+    }
+    75% {
+      transform: scaleY(2.5); /* Peak occurs later at 75% */
+    }
+    85% {
+      transform: scaleY(0.7);
+    }
+    100% {
+      transform: scaleY(0.6);
+    }
+  }
+
+@keyframes six {
+  0% {
+    transform: scaleY(1.1);
+  }
+  20% {
+    transform: scaleY(0.5);
+  }
+  40% {
+    transform: scaleY(1.6);
+  }
+  60% {
+    transform: scaleY(0.9);
+  }
+  80% {
+    transform: scaleY(1.2);
+  }
+  100% {
+    transform: scaleY(1.1);
+  }
+}
+
+@keyframes seven {
+  0% {
+    transform: scaleY(0.9);
+  }
+  20% {
+    transform: scaleY(1.4);
+  }
+  40% {
+    transform: scaleY(0.6);
+  }
+  60% {
+    transform: scaleY(1.8);
+  }
+  80% {
+    transform: scaleY(0.7);
+  }
+  100% {
+    transform: scaleY(0.9);
+  }
+}
+
+  
+  .boxContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    --boxSize: 3px;
+    --gutter: 3px;
+    width: calc((var(--boxSize) + var(--gutter)) * 7);
+  }
+  
+  .box {
+    transform: scaleY(1);
+    animation-play-state: inherit;
+    height: 20%;
+    width: var(--boxSize);
+    background: #000000;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    border-radius: 8px;
+  }
+  
+  .box1 { animation-name: one; animation-delay: 0s;  }
+  .box2 { animation-name: two; animation-delay: 0.2s; }
+  .box3 { animation-name: three; animation-delay: 0.1s; }
+  .box4 { animation-name: four; animation-delay: 0.3s; }
+  .box5 { animation-name: five; animation-delay: 0.4s; }
+  .box6 { animation-name: six; animation-delay: 0.25s; }
+  .box7 { animation-name: seven; animation-delay: 0.35s; }
+
+  #loadingAnimation {
+    display: flex; /* Make sure it is always visible */
+    animation-play-state: paused; /* Initial state is paused */
+    /* Your existing animation properties */
 }
