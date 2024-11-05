@@ -1,0 +1,19 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build_job:
+  stage: build
+  script:
+    - echo "Build stage wird ausgeführt"
+
+test_job:
+  stage: test
+  script:
+    - echo "Test stage wird ausgeführt"
+
+deploy_job:
+  stage: deploy
+  script:
+    - echo "Deploy stage wird ausgeführt"
