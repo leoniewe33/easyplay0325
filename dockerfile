@@ -2,8 +2,8 @@ FROM httpd:2.4
 # Copy files from /prod to the default apache web directory
 COPY ./prod/ /usr/local/apache2/htdocs/
 # Copy .hataccess fle to the default apache web directory
-COPY ./.htaccess /usr/local/apache2/htdocs/
+#COPY ./.htaccess /usr/local/apache2/htdocs/
 # Ensure fles are readable by apache
 RUN chmod -R 755 /usr/local/apache2/htdocs/
 # Overwrite Apache confguration with custom confgfle
-COPY ./custom-httpd.conf /usr/local/apache2/conf/httpd.conf
+#COPY ./custom-httpd.conf /usr/local/apache2/conf/httpd.conf
