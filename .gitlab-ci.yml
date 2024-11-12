@@ -26,6 +26,8 @@ deploy_job:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   script:
+    - cd prod
+    - ls
     - echo Writing docker image to registry $CI_REGISTRY_IMAGE
     - /kaniko/executor
         --context "${CI_PROJECT_DIR}"
