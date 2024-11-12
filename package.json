@@ -1,0 +1,15 @@
+{
+  "name": "podcastkopie",
+  "version": "1.0.0",
+  "description": "Das Projekt haben wir hauptsächlich auf GitHub entwickelt, da das Gitlab uns leider Probleme bereitet hat.",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build --dist-dir public"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.12.0"
+  }
+}

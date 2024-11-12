@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Play</title>
+    <link rel="stylesheet"  href="css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <a href="podcastDash.html" class="hiddenLink">Podcast Dash</a>
+
+
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-container">
+            
+            <div class="header-logo" id="headerLogo">
+                <a href="index.html">
+                <div id="loadingAnimation" class="boxContainer" style="display: none;">
+                    <div class="box box1"></div>
+                    <div class="box box2"></div>
+                    <div class="box box3"></div>
+                    <div class="box box4"></div>
+                    <div class="box box5"></div>
+                    <div class="box box6"></div>
+                    <div class="box box7"></div>
+                </div></a>
+                
+            </div>
+            
+            <span class="header-title">Easy Play</span>
+
+            <nav class="header-nav">
+                <ul class="nav-list">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="fav.html">Favoriten</a></li>
+                    <li><a href="hilfe.html">Hilfe</a></li>
+                    
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="search-hide">
+                    <button id="searchButton" class="search-button">
+                        <span class="material-icons">search</span>
+                    </button>
+                </div>
+        
+                <button id="menuButton" class="menu-button">
+                    <span class="material-icons">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="drawer" id="drawer">
+        <button id="closeButton" class="close-button">
+            <span class="material-icons">close</span>
+        </button>
+        <nav class="drawer-nav">
+            <ul class="drawer-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="fav.html">Favoriten</a></li>
+                <li><a href="hilfe.html">Hilfe</a></li>
+            </ul>
+        </nav>
+    </div>
+    <main class="layout-content">
+       
+       
+            <div id="podcast-search" class="podcast-search">
+                <input type="text" name="Suchtext" id="search-title" class="search-bar" placeholder="Titel...">
+                <button onclick="searchPodcasts()">Suchen</button>
+                
+            </div>
+            <div class=" fav-div" id="search"></div>
+            <div class="podcast-recommended" ></div>
+            <div id="status-message"></div>
+            <div class="unterüberschrift"> Empfohlene Podcasts</div>
+            <div id="podcast-list" class="grid"></div>
+            <div class="unterüberschrift"> Kategorien</div>
+            <div class="category-container" id="categoryContainer"></div>
+            <div id="category-search-monitor" class="unterüberschrift"></div>
+            <div class= "grid" id="categoryResult"></div>
+            <div class="unterüberschrift" id="newestEpisodes"> Die neusten Folgen deiner Favoriten</div>
+            <div id = "fav-div" class="div fav-div"></div>
+            
+            
+
+      
+    </main>
+    <footer class="footer">
+        <div class="footer-section footer-left">
+            <span>Easy Play</span>
+        </div>
+        <div class="footer-section footer-center">
+            
+            <a href="#"></a>
+        </div>
+        <div class="footer-section footer-right">
+            <a href="hilfe.html">Hilfe</a>
+        </div>
+    </footer>
+
+    <script src="js/main.js"> </script>
+    <script src="js/ui-interactions.js"></script>
+</body>
+</html>

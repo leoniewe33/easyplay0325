@@ -35,14 +35,7 @@ function addFavourite() {
     }
 }
 
-//Favorite löschen --> aus dem Local Cache entfernen, dabei wird der Local Cache ohne den jeweiligen Podcast kopiert und dann ersetzt
-function removeFavourite(podcastId) {
-    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    favorites = favorites.filter(id => id !== podcastId);
-    localStorage.setItem('favorites', JSON.stringify(favorites));
 
-    alert("Podcast wurde aus den Favoriten entfernt!");
-}
 
 
 
@@ -118,6 +111,8 @@ localStorage.setItem('favorites', JSON.stringify(favorites));
    document.getElementById('closeButton').addEventListener('click', function() {
     document.body.classList.remove('drawer-open');
  });
+
+
 
  //Funktionen für die Animationen
  function showLoadingAnimation() {
