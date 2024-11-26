@@ -1,3 +1,4 @@
+const e = require('express');
 const express = require('express');
 
 const app = express();
@@ -12,6 +13,9 @@ app.listen(EXP_PORT, () => {
     })
 
     user = ['max', 'nils', 'leonie', 'lisa'];
+    passwort = [123, '234', 345, 456];
+
+    
 
 app.get('/', (req, res) => {
     res.send('hello world')
@@ -29,5 +33,9 @@ app.get('/', (req, res) => {
         res.send(user)
       })
 
+      app.get('/userPass', (req, res) => {
+       res.send(user[1]+ " "+ passwort[1])
+
+      })
       
 
