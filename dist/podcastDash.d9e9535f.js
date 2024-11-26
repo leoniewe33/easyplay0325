@@ -147,14 +147,7 @@ function insertEpisodes(data) {
         resultsDiv.appendChild(description);
     });
 }
-//Episode wird in den Player geladen und abgespielt
-function loadEpisode(episodeUrl) {
-    const audioPlayer = document.getElementById("audio-player");
-    const audioSource = document.getElementById("audio-source");
-    audioSource.src = episodeUrl;
-    audioPlayer.load();
-    audioPlayer.play();
-}
+
 function addFavourite() {
     console.log("favourite");
     const podcastId = getQueryParams().id;

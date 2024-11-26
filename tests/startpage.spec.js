@@ -11,15 +11,33 @@ test.describe('Startseite der Podcast-App', () => {
   });
 });
 
-test.describe('API Erreichbarkeitstest', () => 
-{
-  test('Prüft, ob die API von der Webseite erreicht wird', async({page}) =>
-  {
+test.describe('Logo ist animiert beim laden', () => {
+  test('Prüfe, ob das Logo animiert beim laden der Webseite', async ({page}) => {
     await page.goto(baseURL);
-    const buttonExists = await page.locator('input.category-button').count();
-    const button = page.locator('input.category-button');
-    console.log('Anzahl der gefundenen Buttons:', buttonExists);
-    console.log(button);
-    await expect(button).toBeVisible();
+    
+    const loadingAnimation = await page.locator('#loadingAnimation');
+    await expect(loadingAnimation).toBeVisible();
+
+    expect(loadingAnimation).not.toBe('none');
+
+    const animationStyle = await loadingAnimation.evaluate((el) =>
+      window.getComputedStyle(el).getPropertyValue('display')
+    );
+  });
 });
+
+test.describe('Suche wird sichtbar beim Klicken auf das Search-Icon', () => {
+  test('Prüfe, ob das Suchfeld beim Klick auf das Suchlogo auftaucht', async ({page}) => {
+    await page.goto(baseURL);
+
+    const searchIcon = page.locator('.search-button');
+    const searchField = page.locator('podcast-search');
+
+    await expect(searchField).toBeHidden;
+
+    await searchIcon.click();
+
+    await expect(searchField).toBeVisible;
+
+  });
 });
