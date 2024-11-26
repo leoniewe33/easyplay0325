@@ -11,6 +11,8 @@ app.listen(EXP_PORT, () => {
     console.log("Ich höre auf Port " + EXP_PORT);
     })
 
+    user = ['max', 'nils', 'leonie', 'lisa'];
+
 app.get('/', (req, res) => {
     res.send('hello world')
     })
@@ -23,3 +25,9 @@ app.get('/', (req, res) => {
         res.send ('Hello about')
       })
       
+      app.get('/users', (req, res) =>{
+        res.send(user)
+      })
+
+      
+
