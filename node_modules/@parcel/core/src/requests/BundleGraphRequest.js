@@ -13,7 +13,6 @@ import type {
   ParcelOptions,
 } from '../types';
 import type {ConfigAndCachePath} from './ParcelConfigRequest';
-import type {AbortSignal} from 'abortcontroller-polyfill/dist/cjs-ponyfill';
 
 import invariant from 'assert';
 import assert from 'assert';
@@ -72,6 +71,7 @@ type RunInput = {|
   ...StaticRunOpts<BundleGraphResult>,
 |};
 
+// TODO: Rename to BundleGraphRequestResult
 export type BundleGraphResult = {|
   bundleGraph: InternalBundleGraph,
   changedAssets: Map<string, Asset>,
@@ -95,6 +95,7 @@ export default function createBundleGraphRequest(
       let {options, api, invalidateReason} = input;
       let {optionsRef, requestedAssetIds, signal} = input.input;
       let measurement = tracer.createMeasurement('building');
+
       let request = createAssetGraphRequest({
         name: 'Main',
         entries: options.entries,
@@ -104,12 +105,14 @@ export default function createBundleGraphRequest(
         lazyExcludes: options.lazyExcludes,
         requestedAssetIds,
       });
+
       let {assetGraph, changedAssets, assetRequests} = await api.runRequest(
         request,
         {
           force: options.shouldBuildLazily && requestedAssetIds.size > 0,
         },
       );
+
       measurement && measurement.end();
       assertSignalNotAborted(signal);
 
