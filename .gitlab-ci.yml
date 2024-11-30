@@ -5,15 +5,8 @@ stages:
 
 build_job:
   stage: build
-  image: node:22-alpine
   script:
-    - npm install
-    - npm run build
-  variables:
-    PARCEL_WORKERS: 0 
-  artifacts:
-    paths:
-      - prod/
+    - echo "Build stage wird ausgeführt"
 
 test_job:
   stage: test
@@ -22,14 +15,5 @@ test_job:
 
 deploy_job:
   stage: deploy
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
   script:
-    - cd prod
-    - ls
-    - echo Writing docker image to registry $CI_REGISTRY_IMAGE
-    - /kaniko/executor
-        --context "${CI_PROJECT_DIR}"
-        --dockerfile "${CI_PROJECT_DIR}/dockerfile"
-        --destination "${CI_REGISTRY_IMAGE}:latest"
+    - echo "Deploy stage wird ausgeführt"
