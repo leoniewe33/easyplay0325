@@ -1,0 +1,21 @@
+{
+  "name": "podcastkopie",
+  "version": "1.0.0",
+  "description": "Das Projekt haben wir hauptsächlich auf GitHub entwickelt, da das Gitlab uns leider Probleme bereitet hat.",
+  "source": "src/index.html",
+  "scripts": {
+    "test": "playwright test",
+    "start": "parcel",
+    "build": "parcel build --dist-dir prod"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.9.3",
+    "parcel": "^2.12.0"
+  },
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
