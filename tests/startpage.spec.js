@@ -1,6 +1,8 @@
 const { test, expect } = require('@playwright/test');
 
 const baseURL = 'http://localhost:1234/src/index.html';
+const podcastDashUrl = 'http://localhost:1234/src/podcastDash.html';
+
 
 test.describe('Startseite der Podcast-App', () => {
   test('Prüft, ob der richtige Titel angezeigt wird', async ({ page }) => {
@@ -39,5 +41,22 @@ test.describe('Suche wird sichtbar beim Klicken auf das Search-Icon', () => {
 
     await expect(searchField).toBeVisible;
 
+  });
+});
+
+test.describe('Verlinkung von Podcast zu Übersichtsseite', () => {
+  test('Prüfe, ob beim Klick auf einen Podcast die Übersicht des Podcasts angezeigt wird', async ({ page }) => {
+    test.setTimeout(60000);
+
+    await page.goto(baseURL, { waitUntil: 'load' });
+
+    const podcast = page.locator('#podcast-list');
+    
+    podcast.click();
+    await Promise.all([
+      page.waitForURL(podcastDashUrl, { waitUntil: 'load' }),
+    ]);
+
+    expect(page.url()).toBe(podcastDashUrl);
   });
 });
