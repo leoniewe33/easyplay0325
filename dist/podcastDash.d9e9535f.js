@@ -147,7 +147,6 @@ function insertEpisodes(data) {
         resultsDiv.appendChild(description);
     });
 }
-
 function addFavourite() {
     console.log("favourite");
     const podcastId = getQueryParams().id;

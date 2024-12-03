@@ -3,7 +3,7 @@ const express = require('express');
 
 const app = express();
 
-const EXP_PORT = 8080;
+const EXP_PORT = 10042;
 
 app.use(express.static('public'));
 
