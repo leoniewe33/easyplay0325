@@ -1,7 +1,10 @@
 const { MongoClient } = require('mongodb');
-const url = 'mongodb://webengineering.ins.hs-anhalt.de:<10013>';
+const url = 'mongodb://webengineering.ins.hs-anhalt.de:10042';
 const client = new MongoClient(url);
-async function main() {
+
+
+    async function createUser(uname, upassword)
+{
     try {
         // connect to MongoDB
         await client.connect();
@@ -17,7 +20,7 @@ async function main() {
         const collection = db.collection(collectionName);
 
         // add a test file
-        const user = { name: 'testuser', password: '123456' }; 
+        const user = { name: uname, password: upassword }; 
         const result = await collection.insertOne(user);
         console.log('Nutzer erfolgreich eingefügt:', result.insertedId);
 
@@ -30,4 +33,4 @@ async function main() {
     }
 }
 
-main();
+createUser("Nils","12345678");
