@@ -1,36 +1,22 @@
-const { MongoClient } = require('mongodb');
-const url = 'mongodb://webengineering.ins.hs-anhalt.de:10042';
-const client = new MongoClient(url);
-
-
-    async function createUser(uname, upassword)
-{
+async function main() {
+    const { MongoClient } = require('mongodb');
+    const uri = 'mongodb://webengineering.ins.hs-anhalt.de:10043/testdb';
+    const client = new MongoClient(uri);
+  
     try {
-        // connect to MongoDB
-        await client.connect();
-        console.log('Verbindung zur MongoDB erfolgreich hergestellt.');
+      await client.connect();
+      console.log('Verbindung erfolgreich');
+  
+      const db = client.db('testdb');
+      const collection = db.collection('users');
 
-        const dbName = 'testdb';
-        const collectionName = 'users';
-
-        // create or collcte the databank
-        const db = client.db(dbName);
-
-        // get the collection
-        const collection = db.collection(collectionName);
-
-        // add a test file
-        const user = { name: uname, password: upassword }; 
-        const result = await collection.insertOne(user);
-        console.log('Nutzer erfolgreich eingefügt:', result.insertedId);
-
-    } catch (error) {
-        console.error('Fehler beim Verbinden oder Arbeiten mit der MongoDB:', error);
+      const result = await collection.insertOne({ name: 'Leonie', password: '1234' });
+      console.log('Eingefügt');
+    } catch (err) {
+      console.error('Fehler:', err);
     } finally {
-        // close the connection
-        await client.close();
-        console.log('Verbindung zur MongoDB geschlossen.');
+      await client.close();
     }
-}
-
-createUser("Nils","12345678");
+  }
+  
+  main().catch(console.error);
