@@ -4,3 +4,4 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /.parcel-chache
+/node_modules/.bin
