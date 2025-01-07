@@ -133,3 +133,6 @@ loadingAnimation.style.animationPlayState = 'paused'; // Pause the animation
 console.error("Loading animation element not found.");
 }
 }
+
+window.addFavourite = addFavourite;
+

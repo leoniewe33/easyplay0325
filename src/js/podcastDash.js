@@ -207,7 +207,7 @@ function insertEpisodes(data) {
         resultsDiv.appendChild(description);
     });
 }
-        function addFavourite() {
+function addFavourite() {
         console.log("favourite");
         const podcastId = getQueryParams().id;
         
@@ -299,3 +299,6 @@ function hideLoadingAnimation() {
         console.error("Loading animation element not found.");
     }
 }
+
+window.addFavourite = addFavourite;
+window.fetchNewAudio = fetchNewAudio;
