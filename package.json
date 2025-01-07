@@ -18,5 +18,10 @@
   "dependencies": {
     "express": "^4.21.1",
     "mongodb": "^6.12.0"
+  },
+  "parcel": {
+    "sourceMaps": true,
+    "minify": true,
+    "target": "browser"
   }
 }
