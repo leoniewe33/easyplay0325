@@ -13,7 +13,7 @@ build_job:
     PARCEL_WORKERS: 0 
   artifacts:
     paths:
-      - prod/
+      - frontend/prod/
 
 test_job:
   stage: test
@@ -26,7 +26,7 @@ deploy_job:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   script:
-    - cd prod
+    - cd frontend/prod
     - ls
     - echo Writing docker image to registry $CI_REGISTRY_IMAGE
     - /kaniko/executor
