@@ -5,7 +5,7 @@ stages:
 
 build_job:
   before_script:
-    - cd frontend # or frontend
+    - cd frontend
   stage: build
   image: node:22-alpine
   script:
@@ -23,6 +23,8 @@ test_job:
     - echo "Test stage wird ausgeführt"
 
 deploy_job:
+  before_script:
+    - cd frontend
   stage: deploy
   image:
     name: gcr.io/kaniko-project/executor:debug
