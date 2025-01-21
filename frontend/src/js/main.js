@@ -1,3 +1,6 @@
+import ArrowRight from '/images/arrow_right.png';
+import Haken from '/images/Haken.png';
+
 "use strict";
 
 var userLang = navigator.language || navigator.userLanguage;
@@ -124,7 +127,7 @@ async function fetchPodcasts(title, page) {
 
             // Create the icon element
             const icon = document.createElement('img');
-            icon.src = "images/arrow_right.png";
+            icon.src = ArrowRight;
             icon.style = "height: 90px; margin-bottom: 125px; padding-left: 40px"
             // Append the icon to the button
             moreBtn.appendChild(icon);
@@ -308,7 +311,7 @@ moreBtn.addEventListener('click', function () {
 });
 
 const icon = document.createElement('img');
-icon.src = "images/arrow_right.png";
+icon.src = ArrowRight;
 icon.style.height = "90px";
 icon.style.marginBottom = "140px";
 icon.style.paddingLeft = "40px";

@@ -63,7 +63,7 @@
             let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         
             if (favorites.includes(podcastId)) {
-            document.getElementById("fav-btn-image").src="Haken";
+            document.getElementById("fav-btn-image").src=Haken;
             } else {
             }
     
@@ -166,7 +166,7 @@ function insertEpisodes(data) {
         episodeButton.className = "episode-button";
         
         const image = document.createElement("img");
-        image.src = "images/play-button.png";
+        image.src = PlayButton;
         image.style = "height: 30px";
         image.className = "episode-play-icon";
         const description = document.createElement("div");

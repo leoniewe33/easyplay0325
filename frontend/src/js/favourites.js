@@ -1,3 +1,5 @@
+import Haken from '/images/Haken.png';
+
 //Funktionalität der Navigation
 document.getElementById('menuButton').addEventListener('click', function() {
     document.body.classList.toggle('drawer-open');

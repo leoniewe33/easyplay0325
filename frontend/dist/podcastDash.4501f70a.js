@@ -648,7 +648,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchAudio(id, episodeCount);
     const podcastId = getQueryParams().id;
     let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    if (favorites.includes(podcastId)) document.getElementById("fav-btn-image").src = "Haken";
+    if (favorites.includes(podcastId)) document.getElementById("fav-btn-image").src = (0, _hakenPngDefault.default);
     const searchInput = document.getElementById('search-title');
     if (searchInput) searchInput.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
@@ -716,7 +716,7 @@ function insertEpisodes(data) {
         const episodeButton = document.createElement('button');
         episodeButton.className = "episode-button";
         const image = document.createElement("img");
-        image.src = "images/play-button.png";
+        image.src = (0, _playButtonPngDefault.default);
         image.style = "height: 30px";
         image.className = "episode-play-icon";
         const description = document.createElement("div");
@@ -854,42 +854,7 @@ exports.export = function(dest, destName, get) {
 },{}],"bMQdr":[function(require,module,exports,__globalThis) {
 module.exports = require("f94a77154bbf1ee4").getBundleURL('7nQzD') + "Haken.efe9cfd2.png" + "?" + Date.now();
 
-},{"f94a77154bbf1ee4":"lgJ39"}],"lgJ39":[function(require,module,exports,__globalThis) {
-"use strict";
-var bundleURL = {};
-function getBundleURLCached(id) {
-    var value = bundleURL[id];
-    if (!value) {
-        value = getBundleURL();
-        bundleURL[id] = value;
-    }
-    return value;
-}
-function getBundleURL() {
-    try {
-        throw new Error();
-    } catch (err) {
-        var matches = ('' + err.stack).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^)\n]+/g);
-        if (matches) // The first two stack frames will be this function and getBundleURLCached.
-        // Use the 3rd one, which will be a runtime in the original bundle.
-        return getBaseURL(matches[2]);
-    }
-    return '/';
-}
-function getBaseURL(url) {
-    return ('' + url).replace(/^((?:https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
-// TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
-function getOrigin(url) {
-    var matches = ('' + url).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^/]+/);
-    if (!matches) throw new Error('Origin not found');
-    return matches[0];
-}
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-exports.getOrigin = getOrigin;
-
-},{}],"dfH5N":[function(require,module,exports,__globalThis) {
+},{"f94a77154bbf1ee4":"lgJ39"}],"dfH5N":[function(require,module,exports,__globalThis) {
 module.exports = require("e53122e1f6962f46").getBundleURL('7nQzD') + "play-button.05dff685.png" + "?" + Date.now();
 
 },{"e53122e1f6962f46":"lgJ39"}]},["2TqKz","j0nKJ"], "j0nKJ", "parcelRequire94c2")
