@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Podcast Details</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet"  href="css/style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="js/favourites.js"></script>
+    <script src="js/favourites.js" type="module"></script>
+
     
 
 </head>
@@ -69,9 +70,9 @@
                 <input type="text" name="Suchtext" id="search-title" class="search-bar" placeholder="Title...">
                 <button onclick="searchPodcasts()">Search</button>
             </div>
+            <div class="fav-div" id="search"></div>
+            <div class="podcast-recommended" ></div>
             <div id="status-message"></div>
-            <div id="podcast-list" class="grid"></div>
-
             
         <div class="Page-content podcastDashPage flex">
             <div class="podcast-details-left dash-left">
@@ -108,5 +109,6 @@
     </main>
 
     <script src="js/podcastDash.js" type = "module"></script>
+    <script src="js/main.js" type = "module"></script>
 </body>
 </html>
