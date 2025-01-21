@@ -35,5 +35,5 @@ deploy_job:
     - echo Writing docker image to registry $CI_REGISTRY_IMAGE
     - /kaniko/executor
         --context "${CI_PROJECT_DIR}"
-        --dockerfile "${CI_PROJECT_DIR}/dockerfile"
+        --dockerfile "${CI_PROJECT_DIR}/frontend/dockerfile"
         --destination "${CI_REGISTRY_IMAGE}:latest"
