@@ -15,7 +15,7 @@ build_job:
     PARCEL_WORKERS: 0 
   artifacts:
     paths:
-      - prod/
+      - frontend/prod/
 
 test_job:
   stage: test
