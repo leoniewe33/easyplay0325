@@ -1,7 +1,7 @@
 node_modules/
-/test-results/
+/frontend/test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-/.parcel-chache
+/frontend/.parcel-chache
 /node_modules/.bin
