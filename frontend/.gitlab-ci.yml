@@ -4,6 +4,8 @@ stages:
   - deploy
 
 build_job:
+  before_script:
+    - cd frontend # or frontend
   stage: build
   image: node:22-alpine
   script:
