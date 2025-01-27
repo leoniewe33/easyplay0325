@@ -39,3 +39,13 @@ app.get('/', (req, res) => {
       })
       
 
+app.post('/user', async (req, res) => {
+    const { name, password } = req.body;
+    const result = await createUser(name, password);
+    res.send(result);
+});
+    
+app.delete('/user/:name', async (req, res) => {
+    const result = await deleteUser(req.params.name);
+    res.send(result);
+});
