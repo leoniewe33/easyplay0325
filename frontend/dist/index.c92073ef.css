@@ -77,6 +77,16 @@ body {
   font-size: 24px;
 }
 
+.header-profil img {
+  width: 30px;
+  height: 30px;
+  transition: transform .3s;
+}
+
+.header-profil img:hover {
+  transform: scale(1.2);
+}
+
 .drawer {
   z-index: 1001;
   background-color: #fff;
@@ -896,5 +906,49 @@ a:any-link {
 #loadingAnimation {
   animation-play-state: paused;
   display: flex;
+}
+
+dialog[open] {
+  background: #f4f2f0;
+  border: solid #060400;
+  border-radius: .5rem;
+  width: 50%;
+  height: 50%;
+  margin: 5em auto;
+}
+
+dialog {
+  place-content: center;
+  align-items: center;
+}
+
+dialog::backdrop {
+  background: #61676bb3;
+}
+
+.btn-anmeldung {
+  color: #fff;
+  cursor: pointer;
+  background: #666;
+  border: thin solid #333;
+  border-radius: .5em;
+  margin: .5em;
+  padding: .5em 1em;
+  font-size: 1em;
+}
+
+.input-anmeldung {
+  width: 80%;
+}
+
+[role="note"] {
+  border-left: solid #c82f04;
+  padding-left: .5em;
+}
+
+[role="note"]:before {
+  content: "Beachten:  ";
+  color: #c82f04;
+  font-weight: blod;
 }
 /*# sourceMappingURL=index.c92073ef.css.map */

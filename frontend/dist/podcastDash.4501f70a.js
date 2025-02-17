@@ -821,37 +821,7 @@ function hideLoadingAnimation() {
 window.addFavourite = addFavourite;
 window.fetchNewAudio = fetchNewAudio;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","/images/Haken.png":"bMQdr","/images/play-button.png":"dfH5N"}],"gkKU3":[function(require,module,exports,__globalThis) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, '__esModule', {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === 'default' || key === '__esModule' || Object.prototype.hasOwnProperty.call(dest, key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"bMQdr":[function(require,module,exports,__globalThis) {
+},{"/images/Haken.png":"bMQdr","/images/play-button.png":"dfH5N","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bMQdr":[function(require,module,exports,__globalThis) {
 module.exports = require("f94a77154bbf1ee4").getBundleURL('7nQzD') + "Haken.efe9cfd2.png" + "?" + Date.now();
 
 },{"f94a77154bbf1ee4":"lgJ39"}],"dfH5N":[function(require,module,exports,__globalThis) {

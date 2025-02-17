@@ -23,3 +23,7 @@ document.getElementById('searchButton').addEventListener('click', function() {
  document.getElementById('closeButton').addEventListener('click', function() {
     document.body.classList.remove('drawer-open');
  });
+
+ document.getElementById('IconShow').addEventListener('click', function() {
+    var IconUser = document.getElementById
+ })

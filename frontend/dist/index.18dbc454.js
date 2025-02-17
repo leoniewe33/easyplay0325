@@ -889,8 +889,16 @@ function hideLoadingAnimation() {
     if (loadingAnimation) loadingAnimation.style.animationPlayState = 'paused'; // Pause the animation
     else console.error("Loading animation element not found.");
 }
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById("show-dialog").addEventListener("click", ()=>{
+        document.getElementById("dialog").showModal();
+    });
+    document.getElementById("close-dialog").addEventListener("click", ()=>{
+        document.getElementById("dialog").close();
+    });
+});
 
-},{"/images/arrow_right.png":"ayvNq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","/images/Haken.png":"3Srh9"}],"ayvNq":[function(require,module,exports,__globalThis) {
+},{"/images/arrow_right.png":"ayvNq","/images/Haken.png":"3Srh9","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ayvNq":[function(require,module,exports,__globalThis) {
 module.exports = require("905cada9aec67325").getBundleURL('10Mjw') + "arrow_right.ee810a87.png" + "?" + Date.now();
 
 },{"905cada9aec67325":"lgJ39"}],"lgJ39":[function(require,module,exports,__globalThis) {
@@ -928,7 +936,10 @@ exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
 
-},{}],"gkKU3":[function(require,module,exports,__globalThis) {
+},{}],"3Srh9":[function(require,module,exports,__globalThis) {
+module.exports = require("24221fc5381a6ac0").getBundleURL('10Mjw') + "Haken.efe9cfd2.png" + "?" + Date.now();
+
+},{"24221fc5381a6ac0":"lgJ39"}],"gkKU3":[function(require,module,exports,__globalThis) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -958,9 +969,6 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"3Srh9":[function(require,module,exports,__globalThis) {
-module.exports = require("24221fc5381a6ac0").getBundleURL('10Mjw') + "Haken.efe9cfd2.png" + "?" + Date.now();
-
-},{"24221fc5381a6ac0":"lgJ39"}]},["80cCk","1SICI"], "1SICI", "parcelRequire94c2")
+},{}]},["80cCk","1SICI"], "1SICI", "parcelRequire94c2")
 
 //# sourceMappingURL=index.18dbc454.js.map

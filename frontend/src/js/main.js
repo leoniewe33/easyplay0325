@@ -372,3 +372,16 @@ function hideLoadingAnimation() {
         console.error("Loading animation element not found.");
     }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+	document.getElementById("show-dialog")
+		.addEventListener("click", () => {
+			document.getElementById("dialog")
+				.showModal();
+		});
+	document.getElementById("close-dialog")
+		.addEventListener("click", () => {
+			document.getElementById("dialog")
+				.close();
+		});
+});

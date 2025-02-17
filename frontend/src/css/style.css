@@ -87,6 +87,15 @@ body {
     color: #333;
 }
 
+.header-profil img {
+  height: 30px;
+  width: 30px;
+  transition: transform 0.3s ease;
+}
+.header-profil img:hover {
+  transform: scale(1.2);
+
+}
 
 .drawer {
     display: none;
@@ -927,4 +936,62 @@ a:any-link {
     display: flex; /* Make sure it is always visible */
     animation-play-state: paused; /* Initial state is paused */
     /* Your existing animation properties */
+}
+
+
+/* Diaglog - Anmeldung*/
+
+dialog[open] {
+	width: 50%;
+  height: 50%;
+	background: #f4f2f0;
+	border:  solid #060400;
+  border-radius: .5rem;
+	margin: 5em auto;
+}
+
+dialog {
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+dialog::backdrop {
+	background: hsla(202, 5%, 40%, 0.7);
+}
+
+.btn-anmeldung{
+	border-radius: .5em .5em;
+	border: thin solid;
+	padding: .5em;
+	margin: .5em;
+}
+
+.btn-anmeldung{
+	padding: 0.5em 1em;
+	font-size: 1em;
+	background: #666;
+	border: thin solid #333;
+	color: white;
+	cursor: pointer;
+}
+
+.input-anmeldung{
+  width: 80%;
+}
+
+/*button:hover,
+button:focus {
+	background: #333;
+	transform: translateY(2px);
+}
+*/
+[role=note] {
+	border-left: medium solid #c82f04;
+	padding-left: 0.5em;
+}
+
+[role=note]:before {
+	content: 'Beachten:  ';
+	color: #c82f04;
+	font-weight: blod;
 }

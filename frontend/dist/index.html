@@ -37,9 +37,27 @@
                     <li><a href="/index.html">Home</a></li>
                     <li><a href="/fav.html">Favoriten</a></li>
                     <li><a href="/hilfe.html">Hilfe</a></li>
-                    
+                
                 </ul>
             </nav>
+            <div id="show-dialog" class="header-profil">
+                <img id="IconShow" src="/IconUser.c4958576.png">
+
+            </div>
+
+            <dialog id="dialog">
+                <h2>Anmeldung</h2>
+                <form action="#" method="post">
+                    <label for="email">E-Mail: </label>
+                    <input id="email" class="input-anmeldung" type="email"><br><br>
+                    <label for="passwd">Passwort: </label>
+                    <input id="passwd" class="input-anmeldung" type="password">  
+                </form>
+                <button id="Anmeldung" class="btn-anmeldung">Anmelden</button>
+                <button id="close-dialog" class="btn-anmeldung">Abbrechen</button>
+            </dialog>
+        
+
             <div class="header-actions">
                 <div class="search-hide">
                     <button id="searchButton" class="search-button">
@@ -66,7 +84,6 @@
         </nav>
     </div>
     <main class="layout-content">
-       
        
             <div id="podcast-search" class="podcast-search">
                 <input type="text" name="Suchtext" id="search-title" class="search-bar" placeholder="Titel...">
