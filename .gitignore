@@ -4,5 +4,5 @@ frontend/dist/
 playwright-report/
 blob-report/
 playwright/.cache/
-frontend/.parcel-chache
+frontend/.parcel-cache
 node_modules/.bin
