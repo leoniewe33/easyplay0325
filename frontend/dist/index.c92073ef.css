@@ -913,6 +913,7 @@ dialog[open] {
   border: solid #060400;
   border-radius: .5rem;
   width: 50%;
+  max-width: 700px;
   height: 50%;
   margin: 5em auto;
 }
@@ -920,25 +921,105 @@ dialog[open] {
 dialog {
   place-content: center;
   align-items: center;
+  width: 100%;
+  max-width: 800px;
+  transition: transform .5s ease-in-out;
+  overflow: hidden;
 }
 
 dialog::backdrop {
   background: #61676bb3;
 }
 
+.img-dialog {
+  width: 40px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.form-wrapper {
+  width: 200%;
+  transition: transform .5s ease-in-out;
+  display: flex;
+}
+
+.form-container {
+  box-sizing: border-box;
+  width: 50%;
+  padding: 20px;
+  position: relative;
+}
+
+.heading {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 20px 0;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.head-anmeldung {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.form-log {
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  display: flex;
+}
+
+.form-group {
+  align-items: center;
+  gap: 20px;
+  display: flex;
+}
+
+.form-group label {
+  text-align: right;
+  width: 10%;
+}
+
+.form-group input {
+  color: #4d4949;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex-grow: 1;
+  height: 30px;
+  margin-right: 5px;
+  padding: 8px;
+  font-size: 18px;
+}
+
+.form-button {
+  align-items: center;
+  gap: 10px;
+  max-width: 400px;
+  margin: auto;
+  display: flex;
+}
+
 .btn-anmeldung {
   color: #fff;
   cursor: pointer;
-  background: #666;
+  background: #2d2d2d;
   border: thin solid #333;
-  border-radius: .5em;
-  margin: .5em;
+  border-radius: .5rem;
+  width: 100%;
   padding: .5em 1em;
   font-size: 1em;
 }
 
-.input-anmeldung {
-  width: 80%;
+.form-lab-tex {
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 10px;
+  max-width: 400px;
+  margin: 20px auto auto;
+  display: flex;
 }
 
 [role="note"] {
@@ -950,5 +1031,25 @@ dialog::backdrop {
   content: "Beachten:  ";
   color: #c82f04;
   font-weight: blod;
+}
+
+.switch-right {
+  transform: translateX(-50%);
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.switch-form {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.switch-form a {
+  color: #000;
+  cursor: pointer;
+  text-decoration: underline;
 }
 /*# sourceMappingURL=index.c92073ef.css.map */

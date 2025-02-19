@@ -896,6 +896,12 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("close-dialog").addEventListener("click", ()=>{
         document.getElementById("dialog").close();
     });
+    document.getElementById("close-dialog2").addEventListener("click", ()=>{
+        document.getElementById("dialog").close();
+    });
+    document.getElementById("close-dialog3").addEventListener("click", ()=>{
+        document.getElementById("dialog").close();
+    });
 });
 document.getElementById("showRegister").addEventListener("click", function(event) {
     event.preventDefault();

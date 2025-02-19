@@ -964,6 +964,13 @@ place-content: center;
 dialog::backdrop {
 background: hsla(202, 5%, 40%, 0.7);
 }
+.img-dialog{
+  position: absolute;
+  top:10;
+  right: 10;
+  width: 40px;
+}
+
 .form-wrapper {
 display: flex;
 width: 200%; /* Beide Formulare nebeneinander */
@@ -974,6 +981,8 @@ transition: transform 0.5s ease-in-out;
 width: 50%;
 padding: 20px;
 box-sizing: border-box;
+position: relative;
+
 }
 
 .heading{
@@ -983,6 +992,11 @@ text-align: center;
 font-weight: bold;
 padding: 20px 0 20px 0;
 margin-bottom: 10px;
+}
+
+.head-anmeldung{
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .form-log {
