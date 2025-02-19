@@ -1,8 +1,8 @@
 node_modules/
-/frontend/test-results/
-/frontend/dist/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/frontend/.parcel-chache
-/node_modules/.bin
+frontend/test-results/
+frontend/dist/
+playwright-report/
+blob-report/
+playwright/.cache/
+frontend/.parcel-chache
+node_modules/.bin
