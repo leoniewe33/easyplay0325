@@ -8,7 +8,7 @@ const EXP_PORT = 10042;
 app.use(express.static('public'));
 
 app.listen(EXP_PORT, () => {
-    // Konsolenausgabe
+    // Konsolenausgabe für den Port
     console.log("Ich höre auf Port " + EXP_PORT);
     })
 
