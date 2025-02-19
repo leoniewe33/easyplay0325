@@ -897,6 +897,14 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById("dialog").close();
     });
 });
+document.getElementById("showRegister").addEventListener("click", function(event) {
+    event.preventDefault();
+    document.querySelector(".form-wrapper").classList.add("switch-right");
+});
+document.getElementById("showLogin").addEventListener("click", function(event) {
+    event.preventDefault();
+    document.querySelector(".form-wrapper").classList.remove("switch-right");
+});
 
 },{"/images/arrow_right.png":"ayvNq","/images/Haken.png":"3Srh9","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ayvNq":[function(require,module,exports,__globalThis) {
 module.exports = require("905cada9aec67325").getBundleURL('10Mjw') + "arrow_right.ee810a87.png" + "?" + Date.now();

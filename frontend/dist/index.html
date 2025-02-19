@@ -46,15 +46,58 @@
             </div>
 
             <dialog id="dialog">
-                <h2>Anmeldung</h2>
-                <form action="#" method="post">
-                    <label for="email">E-Mail: </label>
-                    <input id="email" class="input-anmeldung" type="email"><br><br>
-                    <label for="passwd">Passwort: </label>
-                    <input id="passwd" class="input-anmeldung" type="password">  
-                </form>
-                <button id="Anmeldung" class="btn-anmeldung">Anmelden</button>
-                <button id="close-dialog" class="btn-anmeldung">Abbrechen</button>
+                <div class="form-wrapper">
+                    <div class="form-container" id="loginForm"> 
+                        <div class="heading">Anmeldung</div>
+                        <form action="#" method="post" class="form-log">
+                            <div class="form-group">
+                                <label id="email" for="email">E-Mail:</label>
+                                <input type="email" id="email" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label class="label-anm" for="passwd">Passwort:</label>
+                                <input id="passwd" type="password" name="password">  
+                            </div>
+                        </form>
+                        <div class="form-button">
+                            <button id="Anmeldung" class="btn-anmeldung">Anmelden</button>
+                            <button id="close-dialog" class="btn-anmeldung">Abbrechen</button>
+                        </div>
+                        <div class="form-lab-tex">
+                            <p class="switch-form">
+                               <a href="#" id="showRegister">Noch nicht Registriert?</a>
+                            </p>
+                            <p class="switch-form">Kennwort vergessen?</p>
+                        </div>
+                    </div>
+
+                    <div id="registerForm" class="form-container">
+                        <div class="heading">Registrierung</div>
+                        <form class="form-log">
+                            <div class="form-group">
+                                <label for="user">Username:</label>
+                                <input type="email" id="reg-email" name="reg-email">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-email">E-Mail:</label>
+                                <input type="email" id="reg-email" name="reg-email">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-passwd">Passwort:</label>
+                                <input id="reg-passwd" type="password" name="reg-password">
+                            </div>
+                        </form>
+                        <div class="form-button">
+                            <button id="registrieren" class="btn-anmeldung">Registrieren</button>
+                        </div>
+                        <div class="form-lab-tex">
+                            <p class="switch-form">
+                                Schon ein Konto? <a href="#" id="showLogin">Einloggen</a>
+                            </p>
+                        </div>            
+                    </div>
+                </div>
+                
             </dialog>
         
 

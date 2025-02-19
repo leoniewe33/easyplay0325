@@ -386,19 +386,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-	document.getElementById("show-dialog")
-		.addEventListener("click", () => {
-			document.getElementById("dialog")
-				.showModal();
-		});
-	document.getElementById("close-dialog")
-		.addEventListener("click", () => {
-			document.getElementById("dialog")
-				.close();
-		});
-});
-
 document.getElementById("showRegister").addEventListener("click", function(event) {
     event.preventDefault();
     document.querySelector(".form-wrapper").classList.add("switch-right");
