@@ -1,51 +1,71 @@
-const e = require('express');
 const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const app = express();
-
 const EXP_PORT = 10042;
 
+// Middleware
 app.use(express.static('public'));
+app.use(bodyParser.json());
 
-app.listen(EXP_PORT, () => {
-    // Konsolenausgabe für den Port
-    console.log("Ich höre auf Port " + EXP_PORT);
-    })
+const mongoURI = 'mongodb://webengineering.ins.hs-anhalt.de:10043/testdb'; // Passe die URI ggf. an
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB verbunden'))
+    .catch(err => console.error('Fehler bei MongoDB-Verbindung:', err));
 
-    user = ['max', 'nils', 'leonie', 'lisa'];
-    passwort = [123, '234', 345, 456];
 
-    
+const userSchema = new mongoose.Schema({
+    name: String,
+    password: String
+});
+
+const User = mongoose.model('User', userSchema);
 
 app.get('/', (req, res) => {
-    res.send('hello world')
-    })
-
-    app.post('/', (req, res) => {
-        res.send('POST request to the homepage')
-      })
-
-      app.get('/about', (req, res) => {
-        res.send ('Hello about')
-      })
-      
-      app.get('/users', (req, res) =>{
-        res.send(user)
-      })
-
-      app.get('/userPass', (req, res) => {
-       res.send(user[1]+ " "+ passwort[1])
-
-      })
-      
-
-app.post('/user', async (req, res) => {
-    const { name, password } = req.body;
-    const result = await createUser(name, password);
-    res.send(result);
+  res.send('API läuft. Verfügbare Endpunkte: /users, /user (POST), /user/:name (DELETE)');
 });
-    
+
+// GET - Alle Benutzer abrufen
+app.get('/users', async (req, res) => {
+    try {
+        const users = await User.find({});
+        res.json(users);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// POST - Neuen Benutzer erstellen
+app.post('/user', async (req, res) => {
+    try {
+        const { name, password } = req.body;
+        if (!name || !password) {
+            return res.status(400).json({ error: 'Name und Passwort sind erforderlich' });
+        }
+
+        const newUser = new User({ name, password });
+        await newUser.save();
+        res.json({ message: 'Benutzer erstellt', user: newUser });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// DELETE - Benutzer löschen
 app.delete('/user/:name', async (req, res) => {
-    const result = await deleteUser(req.params.name);
-    res.send(result);
+    try {
+        const result = await User.findOneAndDelete({ name: req.params.name });
+        if (!result) {
+            return res.status(404).json({ error: 'Benutzer nicht gefunden' });
+        }
+        res.json({ message: 'Benutzer gelöscht', user: result });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Server starten
+app.listen(EXP_PORT, () => {
+    console.log(`Server läuft auf Port ${EXP_PORT}`);
 });
