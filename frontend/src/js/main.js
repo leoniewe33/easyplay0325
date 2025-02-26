@@ -407,3 +407,41 @@ document.getElementById("showLogin").addEventListener("click", function(event) {
 });
 
 
+document.getElementById("Anmeldung").addEventListener("click", async function (event) {
+    event.preventDefault();
+  
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("passwd").value;
+  
+    const response = await fetch("http://localhost:10042/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: email, password })
+    });
+  
+    const result = await response.json();
+    alert(result.message);
+  });
+  
+  document.getElementById("registrieren").addEventListener("click", async function () {
+    console.log("Registrierungs-Button wurde geklickt!");
+  
+    const username = document.getElementById("reg-email").value;
+    const password = document.getElementById("reg-passwd").value;
+  
+    try {
+      const response = await fetch("http://localhost:10042/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+  
+      const result = await response.json();
+      alert(result.message);
+    } catch (error) {
+      console.error("Fehler bei der Registrierung:", error);
+      alert("Registrierung fehlgeschlagen!");
+    }
+  });
+  
+  
