@@ -943,7 +943,6 @@ a:any-link {
 
 dialog[open] {
 width: 50%;
-height: 50%;
 background: #f4f2f0;
 border:  solid #060400;
 border-radius: .5rem;
@@ -1013,8 +1012,13 @@ gap: 20px; /* Abstand zwischen Label und Input */
 }
 
 .form-group label {
-width: 10%; /* Feste Breite für Labels, sodass alle Inputs gleich starten */
+width: 80px; /* Feste Breite für Labels, sodass alle Inputs gleich starten */
 text-align: right; /* Rechtsbündige Beschriftung */
+display: block;
+}
+.form-group input::placeholder {
+  visibility: hidden;
+  font-size: smaller;
 }
 
 .form-group input {
@@ -1094,4 +1098,16 @@ font-size: 14px;
 color: black;
 text-decoration: underline;
 cursor: pointer;
+}
+
+@media (max-width: 750px) {
+  .form-group label {
+    display: none;
+  }
+  .form-group input::placeholder {
+    visibility: visible;
+  }
+  .switch-form{
+    text-align: center;
+  }
 }
