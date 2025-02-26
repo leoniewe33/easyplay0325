@@ -410,13 +410,13 @@ document.getElementById("showLogin").addEventListener("click", function(event) {
 document.getElementById("Anmeldung").addEventListener("click", async function (event) {
     event.preventDefault();
   
-    const email = document.getElementById("email").value;
+    const user = document.getElementById("user").value;
     const password = document.getElementById("passwd").value;
   
     const response = await fetch("http://localhost:10042/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: email, password })
+      body: JSON.stringify({ username: user, password })
     });
   
     const result = await response.json();
