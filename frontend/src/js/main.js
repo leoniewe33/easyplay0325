@@ -4,11 +4,13 @@ import Haken from '/images/Haken.png';
 "use strict";
 
 var userLang = navigator.language || navigator.userLanguage;
-
+var loggedIn = false;
+checkLoginStatus();
 //Funktionen beim Aufruf der Seite um die Inhalte zu laden
 document.addEventListener('DOMContentLoaded', function() {
     console.log("onLoad Function");
     fetchRecommendedPodcasts();
+    // dcheckLoginStatus();
     const resultsDiv = document.getElementById('podcast-list');
     resultsDiv.innerHTML = '<p class="loading-message">Empfohlene Podcast werden geladen...</p>';
     getCategories();
@@ -448,11 +450,17 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
   async function checkLoginStatus() {
     const response = await fetch("http://localhost:10042/session", { credentials: "include" });
     const result = await response.json();
+    profilePicture = document.getElementById("IconShow");
+
     if (result.loggedIn) {
+        loggedIn = true;
+        profilePicture.src = "/frontend/src/images/IconUser.png"
         console.log("Benutzer ist angemeldet:", result.user);
+        
     } else {
         console.log("Benutzer ist nicht angemeldet");
     }
+    
 }
 
   
