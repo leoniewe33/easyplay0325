@@ -414,13 +414,15 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
     const password = document.getElementById("passwd").value;
   
     const response = await fetch("http://localhost:10042/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: user, password })
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: user, password }),
+        credentials: "include" // WICHTIG: Session-Cookies mit senden
     });
   
     const result = await response.json();
     alert(result.message);
+    checkLoginStatus();
   });
   
   document.getElementById("registrieren").addEventListener("click", async function () {
@@ -443,5 +445,15 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
       alert("Registrierung fehlgeschlagen!");
     }
   });
+  async function checkLoginStatus() {
+    const response = await fetch("http://localhost:10042/session", { credentials: "include" });
+    const result = await response.json();
+    if (result.loggedIn) {
+        console.log("Benutzer ist angemeldet:", result.user);
+    } else {
+        console.log("Benutzer ist nicht angemeldet");
+    }
+}
+
   
   
