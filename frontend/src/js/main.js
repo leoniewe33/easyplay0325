@@ -1,5 +1,7 @@
 import ArrowRight from '/images/arrow_right.png';
 import Haken from '/images/Haken.png';
+import userHaken from '/images/userReg.png';
+
 
 "use strict";
 
@@ -454,14 +456,67 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
 
     if (result.loggedIn) {
         loggedIn = true;
-        profilePicture.src = "/frontend/src/images/IconUser.png"
+        profilePicture.src = userHaken;
         console.log("Benutzer ist angemeldet:", result.user);
-        
-    } else {
-        console.log("Benutzer ist nicht angemeldet");
+        loadDropDownWithoutReg();
+    
+}};
+
+async function loadDropDownWithoutReg() {
+    const userIcon = document.getElementById("IconShow");
+    const dialog = document.getElementById("dialog");
+    
+    if (!userIcon) {
+        console.error("Element 'IconShow' nicht gefunden!");
+        return;
     }
     
-}
+    const dropdown = document.createElement("div");
+    dropdown.classList.add("user-dropdown");
+    dropdown.innerHTML = `
+        <ul>
+            <li><a href="profil.html">Profil</a></li>
+            <li id="logoutBtn">Logout</li>
+        </ul>
+    `;
+    dropdown.style.display = "none";
+    document.body.appendChild(dropdown);
 
-  
-  
+    try {
+        const response = await fetch("http://localhost:10042/session", { credentials: "include" });
+        const data = await response.json();
+
+        if (data.loggedIn) {
+            userIcon.addEventListener("click", (e) => {
+                e.stopPropagation();
+                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+                dropdown.style.position = "absolute";
+                dropdown.style.top = `${userIcon.offsetTop + userIcon.offsetHeight}px`;
+                dropdown.style.left = `${userIcon.offsetLeft}px`;
+            });
+
+            document.getElementById("logoutBtn").addEventListener("click", async () => {
+                await fetch("http://localhost:10042/logout", { credentials: "include" });
+                location.reload(); 
+            });
+
+            document.addEventListener("click", (e) => {
+                if (!dropdown.contains(e.target) && e.target !== userIcon) {
+                    dropdown.style.display = "none";
+                }
+            });
+
+        } else {
+            userIcon.addEventListener("click", () => {
+                dialog.showModal();
+            });
+        }
+
+    } catch (err) {
+        console.error("Fehler beim Abrufen des Login-Status:", err);
+    }
+}
+//alles geladen, dann aufruf der checkStatus
+document.addEventListener("DOMContentLoaded", () => {
+    checkLoginStatus();
+});
