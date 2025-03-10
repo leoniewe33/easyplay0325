@@ -28,13 +28,13 @@ async function main() {
       const db = client.db('testdb');
       const collection = db.collection('users');
 
-      // 检查用户是否已存在
+      // check if user exists?
       const existingUser = await collection.findOne({ name: userName });
       if (existingUser) {
         return 'User already exists';
       }
 
-      // 创建新用户
+      // creat a new account
       const result = await collection.insertOne({ name: userName, password: userPassword });
       return 'User created successfully';
     } catch (err) {

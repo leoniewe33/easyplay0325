@@ -41,6 +41,18 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/src/index.html"));
 });
 
+//Stay Logged In
+app.use(session({
+  secret: "geheimes-passwort",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+      maxAge: 7 * 24 * 60 * 60 * 1000,  // 7 天days
+      httpOnly: true, 
+      secure: false
+  }
+}));
+
 app.get('/users', async (req, res) => {
     try {
         const users = await User.find({});
@@ -123,6 +135,45 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) return next();
     res.status(401).json({ error: "Nicht eingeloggt" });
 }
+
+// change password
+app.post("/changePassword", isLoggedIn, async (req, res) => {
+  try {
+      const { oldPassword, newPassword } = req.body;
+      if (!oldPassword || !newPassword) {
+          return res.status(400).json({ error: "Altes und neues Passwort sind erforderlich." });
+      }
+
+      // 1) User-Objekt ermitteln (aus Passport-Session)
+      const user = req.user;
+      
+      // 2) Optional: Prüfen, ob oldPassword wirklich korrekt ist:
+      //    Da wir passport-local-mongoose nutzen, können wir es wie folgt machen:
+      const authUser = await user.authenticate(oldPassword);
+      if (!authUser.user) {
+          return res.status(403).json({ error: "Altes Passwort ist falsch." });
+      }
+
+      // 3) setPassword: Neues Passwort setzen
+      await new Promise((resolve, reject) => {
+          user.setPassword(newPassword, function(err) {
+              if (err) return reject(err);
+              // setPassword() ändert das PW nur im RAM; also speichern nicht vergessen
+              user.save(function(err) {
+                  if (err) return reject(err);
+                  resolve();
+              });
+          });
+      });
+
+      // 4) Erfolg zurückmelden
+      res.json({ message: "Passwort erfolgreich geändert." });
+
+  } catch (err) {
+      console.error("Fehler bei Passwort-Änderung:", err);
+      res.status(500).json({ error: "Serverfehler bei Passwort-Änderung." });
+  }
+});
 
 app.listen(EXP_PORT, () => {
     console.log(`Server läuft auf Port ${EXP_PORT}`);

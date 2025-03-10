@@ -416,17 +416,37 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
   
     const user = document.getElementById("user").value;
     const password = document.getElementById("passwd").value;
-  
-    const response = await fetch("http://localhost:10042/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: user, password }),
-        credentials: "include" // WICHTIG: Session-Cookies mit senden
-    });
-  
-    const result = await response.json();
-    alert(result.message);
-    checkLoginStatus();
+
+    const stayLoggedIn = document.getElementById("stayLoggedIn").checked;
+    
+ try {
+        const response = await fetch("http://localhost:10042/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username: user, password }),
+            credentials: "include" // WICHTIG: Session-Cookies mit senden
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert(result.message);
+
+            if (stayLoggedIn) {
+                localStorage.setItem("stayLoggedIn", "true");
+            } else {
+                localStorage.removeItem("stayLoggedIn");
+            }
+
+            checkLoginStatus();
+        } else {
+            alert(result.error || "Login fehlgeschlagen!");
+        }
+    } catch (error) {
+        console.error("Fehler beim Login:", error);
+        alert("Fehler beim Login.");
+    }
+    //alert(result.message);
+    //checkLoginStatus();
   });
   
   document.getElementById("registrieren").addEventListener("click", async function () {
@@ -460,7 +480,36 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
         console.log("Benutzer ist angemeldet:", result.user);
         loadDropDownWithoutReg();
     
-}};
+        } else if (localStorage.getItem("stayLoggedIn")){
+            console.log("Session abgelaufen, erneutes Login mit gespeichertem Token...");
+            autoLogin();
+        }
+};
+async function autoLogin(){
+    const user = localStorage.getItem("savedUsername");
+    const password = localStorage.getItem("savedPassword");
+
+    if (user && password) {
+        const response = await fetch("http://localhost:10042/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username: user, password }),
+            credentials: "include"
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            console.log("Automatisches Login erfolgreich!");
+            checkLoginStatus();
+        } else {
+            console.log("Automatisches Login fehlgeschlagen, Benutzerdaten entfernen...");
+            localStorage.removeItem("stayLoggedIn");
+            localStorage.removeItem("savedUsername");
+            localStorage.removeItem("savedPassword");
+        }
+    }
+   };  
+
 
 async function loadDropDownWithoutReg() {
     const userIcon = document.getElementById("IconShow");
@@ -520,3 +569,4 @@ async function loadDropDownWithoutReg() {
 document.addEventListener("DOMContentLoaded", () => {
     checkLoginStatus();
 });
+
