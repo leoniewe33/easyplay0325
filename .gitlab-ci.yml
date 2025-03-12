@@ -3,7 +3,7 @@ stages:
   - test
   - deploy
 
-build_job:
+build_frontend:
   before_script:
     - cd frontend
   stage: build
@@ -12,17 +12,28 @@ build_job:
     - npm install
     - npm run build
   variables:
-    PARCEL_WORKERS: 0 
+    PARCEL_WORKERS: 0
   artifacts:
     paths:
       - frontend/prod/
+
+build_backend:
+  before_script:
+    - cd backend
+  stage: build
+  image: node:22-alpine
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - backend/
 
 test_job:
   stage: test
   script:
     - echo "Test stage wird ausgeführt"
 
-deploy_job:
+deploy_frontend:
   before_script:
     - cd frontend
   stage: deploy
@@ -37,3 +48,17 @@ deploy_job:
         --context "${CI_PROJECT_DIR}/frontend"
         --dockerfile "${CI_PROJECT_DIR}/frontend/dockerfile"
         --destination "${CI_REGISTRY_IMAGE}/frontend:latest"
+
+deploy_backend:
+  before_script:
+    - cd backend
+  stage: deploy
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - echo Writing docker image to registry $CI_REGISTRY_IMAGE
+    - /kaniko/executor
+        --context "${CI_PROJECT_DIR}/backend"
+        --dockerfile "${CI_PROJECT_DIR}/backend/dockerfile"
+        --destination "${CI_REGISTRY_IMAGE}/backend:latest"
