@@ -6,3 +6,4 @@ blob-report/
 playwright/.cache/
 frontend/.parcel-cache
 node_modules/.bin
+.DS_Store
