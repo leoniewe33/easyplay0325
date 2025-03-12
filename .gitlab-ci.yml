@@ -1,6 +1,5 @@
 stages:
   - build
-  - test
   - deploy
 
 build_frontend:
@@ -27,11 +26,6 @@ build_backend:
   artifacts:
     paths:
       - backend/
-
-test_job:
-  stage: test
-  script:
-    - echo "Test stage wird ausgeführt"
 
 deploy_frontend:
   before_script:
