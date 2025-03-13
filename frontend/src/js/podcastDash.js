@@ -3,6 +3,7 @@
     
     var episodeCount = 20;
     var URLplaying = null;
+    loadFavorites();
         document.getElementById('menuButton').addEventListener('click', function() {
             document.body.classList.toggle('drawer-open');
         });
@@ -210,22 +211,49 @@ function insertEpisodes(data) {
         resultsDiv.appendChild(description);
     });
 }
-function addFavourite() {
-        console.log("favourite");
-        const podcastId = getQueryParams().id;
-        
-        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        
-        if (!favorites.includes(podcastId)) {
-            favorites.push(podcastId);
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-            document.getElementById("fav-btn-image").src=Haken;
-            //alert("Podcast wurde zu den Favoriten hinzugefügt!"); --> wir haben uns dagegen entschieden dieses Feedback zu nutzen, aber wollen es trotzdem stehen lassen
-        } else {
-            alert("Podcast ist bereits in den Favoriten.");
-        }
-    }
+async function addFavourite() {
+    console.log("Favorit wird gespeichert...");
+    const podcastId = getQueryParams().id;
 
+    try {
+        const response = await fetch('http://localhost:10042/favorites', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ podcastId })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            document.getElementById("fav-btn-image").src = Haken;
+            console.log("Favoriten aktualisiert:", data.favorites);
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error("Fehler beim Speichern des Favoriten:", error);
+    }
+}
+
+async function loadFavorites() {
+    try {
+        const response = await fetch('http://localhost:10042/favorites', {
+            credentials: 'include'
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            const podcastId = getQueryParams().id;
+            if (data.favorites.includes(podcastId)) {
+                document.getElementById("fav-btn-image").src = Haken;
+            }
+        }
+    } catch (error) {
+        console.error("Fehler beim Abrufen der Favoriten:", error);
+    }
+}
 
     //Speichern des Fortschritts in einer Folge durch Local-Cache
     document.addEventListener('DOMContentLoaded', function() {
@@ -293,6 +321,10 @@ function showLoadingAnimation() {
         console.error("Loading animation element not found.");
     }
 }
+
+
+
+document.addEventListener('DOMContentLoaded', loadFavorites);
 
 function hideLoadingAnimation() {
     const loadingAnimation = document.getElementById('loadingAnimation');

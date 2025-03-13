@@ -1,11 +1,22 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const passportLocalMongoose = require('passport-local-mongoose');
+
+const UserSchema = new mongoose.Schema({
+    username: String,
+    password: String,
+    favorites: [{ type: String }]
+});
+
+UserSchema.plugin(passportLocalMongoose);
+
+const User = mongoose.models.User || mongoose.model('User', UserSchema);
+module.exports = User;
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const cors = require('cors');
 const path = require('path');
-const User = require('./user');
 
 const app = express();
 const EXP_PORT = 10042;
@@ -40,6 +51,7 @@ mongoose.connect(mongoURI).then(() => console.log('MongoDB verbunden'))
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/src/index.html"));
 });
+
 
 app.get('/users', async (req, res) => {
     try {
@@ -117,6 +129,34 @@ app.get("/session", (req, res) => {
 
 app.get("/secret", isLoggedIn, (req, res) => {
     res.json({ message: "Willkommen auf der geheimen Seite!" });
+});
+app.post('/favorites', async (req, res) => {
+    if (!req.isAuthenticated()) return res.status(401).json({ message: "Nicht eingeloggt" });
+
+    const { podcastId } = req.body;
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+        return res.status(404).json({ message: "Benutzer nicht gefunden" });
+    }
+
+    if (!Array.isArray(user.favorites)) {
+        user.favorites = [];
+    }
+
+    if (!user.favorites.includes(podcastId)) {
+        user.favorites.push(podcastId);
+        await user.save();
+    }
+
+    res.json({ message: "Favorit hinzugefügt", favorites: user.favorites });
+});
+
+app.get('/favorites', async (req, res) => {
+    if (!req.isAuthenticated()) return res.status(401).json({ message: "Nicht eingeloggt" });
+
+    const user = await User.findById(req.user._id);
+    res.json({ favorites: user.favorites });
 });
 
 function isLoggedIn(req, res, next) {

@@ -21,41 +21,37 @@ document.getElementById('searchButton').addEventListener('click', function() {
     }       
  });
 
-//Favoriten hinzufügen --> im Local Cache speichern
-function addFavourite() {
-    console.log("favourite");
-    const podcastId = getQueryParams().id; 
-    
-    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    
-    if (!favorites.includes(podcastId)) {
-        favorites.push(podcastId);
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-        alert("Podcast wurde zu den Favoriten hinzugefügt!");
-    } else {
-        removeFavourite(podcastId)
-    }
-}
-
 
 
 
 
  // Alle Funktion, die beim Laden der Seite aufgerufen werden, dabei werden die Favoriten aus dem Local Cache geladen und jedes Element einzeln eingefügt
  document.addEventListener('DOMContentLoaded', function() {
-    console.log("onLoad Function");
-    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    console.log(favorites)
-    favorites.forEach(element => {
-        console.log(element);
-        insertFavourite(element);
-    });
-    if(favorites == 0)
-    {
-        var div = document.getElementById("fav-div");
-        div.innerHTML = "Du hast noch keine Favoriten"
-    }
+    loadFavorites()
 });
+
+async function loadFavorites()
+{
+    try {
+        const response = await fetch('http://localhost:10042/favorites', {
+            credentials: 'include'
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            if (data.favorites.forEach(element => {
+                insertFavourite(element);
+            }));
+            if(data.favorites == 0)
+            {
+                var div = document.getElementById("fav-div");
+                div.innerHTML = "Du hast noch keine Favoriten"
+            }
+        }
+    } catch (error) {
+        console.error("Fehler beim Abrufen der Favoriten:", error);
+    }
+}
 
 //Das Div der Favoriten mit dem Podcast ausfüllen
 async function insertFavourite(id) {
