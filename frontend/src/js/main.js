@@ -465,12 +465,12 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
 async function loadDropDownWithoutReg() {
     const userIcon = document.getElementById("IconShow");
     const dialog = document.getElementById("dialog");
-    
+
     if (!userIcon) {
         console.error("Element 'IconShow' nicht gefunden!");
         return;
     }
-    
+
     const dropdown = document.createElement("div");
     dropdown.classList.add("user-dropdown");
     dropdown.innerHTML = `
@@ -495,11 +495,6 @@ async function loadDropDownWithoutReg() {
                 dropdown.style.left = `${userIcon.offsetLeft}px`;
             });
 
-            document.getElementById("logoutBtn").addEventListener("click", async () => {
-                await fetch("http://localhost:10042/logout", { credentials: "include" });
-                location.reload(); 
-            });
-
             document.addEventListener("click", (e) => {
                 if (!dropdown.contains(e.target) && e.target !== userIcon) {
                     dropdown.style.display = "none";
@@ -507,16 +502,10 @@ async function loadDropDownWithoutReg() {
             });
 
         } else {
-            userIcon.addEventListener("click", () => {
-                dialog.showModal();
-            });
+            userIcon.addEventListener("click", () => dialog.showModal());
         }
 
     } catch (err) {
         console.error("Fehler beim Abrufen des Login-Status:", err);
     }
 }
-//alles geladen, dann aufruf der checkStatus
-document.addEventListener("DOMContentLoaded", () => {
-    checkLoginStatus();
-});
