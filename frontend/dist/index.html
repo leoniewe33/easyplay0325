@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Play</title>
+    <link rel="stylesheet" href="/index.c92073ef.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <a href="/podcastDash.html" class="hiddenLink">Podcast Dash</a>
+
+
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-container">
+            
+            <div class="header-logo" id="headerLogo">
+                <a href="/index.html">
+                <div id="loadingAnimation" class="boxContainer" style="display: none">
+                    <div class="box box1"></div>
+                    <div class="box box2"></div>
+                    <div class="box box3"></div>
+                    <div class="box box4"></div>
+                    <div class="box box5"></div>
+                    <div class="box box6"></div>
+                    <div class="box box7"></div>
+                </div></a>
+                
+            </div>
+            
+            <span class="header-title">Easy Play</span>
+
+            <nav class="header-nav">
+                <ul class="nav-list">
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/fav.html">Favoriten</a></li>
+                    <li><a href="/hilfe.html">Hilfe</a></li>
+                
+                </ul>
+            </nav>
+            <div id="show-dialog" class="header-profil">
+                <img id="IconShow" src="/IconUser.c4958576.png">
+
+            </div>
+
+            <dialog id="dialog">
+                <div class="form-wrapper">
+                    <div class="form-container" id="loginForm"> 
+                        <img class="img-dialog" id="close-dialog3" src="/icons8-multiply-96.bee56002.png">
+                        <div class="heading head-anmeldung">Anmeldung</div>
+                        <form action="#" method="post" class="form-log">
+                            <div class="form-group">
+                                <label id="email" for="email">Username:</label>
+                                <input type="user" id="user" name="user" placeholder="Username...">
+                            </div>
+                            <div class="form-group">
+                                <label class="label-anm" for="passwd">Passwort:</label>
+                                <input id="passwd" type="password" name="password" placeholder="Passwort...">  
+                            </div>
+                        </form>
+                        <div class="form-button">
+                            <button id="Anmeldung" class="btn-anmeldung">Anmelden</button>
+                            <button id="close-dialog" class="btn-anmeldung">Abbrechen</button>
+                        </div>
+                        <div class="form-lab-tex">
+                            <p class="switch-form">
+                               <a href="#" id="showRegister">Noch nicht Registriert?</a>
+                            </p>
+                            <p class="switch-form">Kennwort vergessen?</p>
+                        </div>
+                    </div>
+
+                    <div id="registerForm" class="form-container">
+                        <img class="img-dialog" id="close-dialog2" src="/icons8-multiply-96.bee56002.png">
+                        <div class="heading">Registrierung</div>
+                        <form class="form-log">
+                            <div class="form-group">
+                                <label for="user">Username:</label>
+                                <input type="email" id="reg-email" name="reg-email" placeholder="Username...">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-email">E-Mail:</label>
+                                <input type="email" id="reg-email" name="reg-email" placeholder="E-mail...">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-passwd">Passwort:</label>
+                                <input id="reg-passwd" type="password" name="reg-password" placeholder="Passwort...">
+                            </div>
+                        </form>
+                        <div class="form-button">
+                            <button id="registrieren" class="btn-anmeldung">Registrieren</button>
+                        </div>
+                        <div class="form-lab-tex">
+                            <p class="switch-form">
+                                Schon ein Konto? <a href="#" id="showLogin">Einloggen</a>
+                            </p>
+                        </div>            
+                    </div>
+                </div>
+                
+            </dialog>
+        
+
+            <div class="header-actions">
+                <div class="search-hide">
+                    <button id="searchButton" class="search-button">
+                        <span class="material-icons">search</span>
+                    </button>
+                </div>
+        
+                <button id="menuButton" class="menu-button">
+                    <span class="material-icons">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="drawer" id="drawer">
+        <button id="closeButton" class="close-button">
+            <span class="material-icons">close</span>
+        </button>
+        <nav class="drawer-nav">
+            <ul class="drawer-list">
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/fav.html">Favoriten</a></li>
+                <li><a href="/hilfe.html">Hilfe</a></li>
+            </ul>
+        </nav>
+    </div>
+    <main class="layout-content">
+       
+            <div id="podcast-search" class="podcast-search">
+                <input type="text" name="Suchtext" id="search-title" class="search-bar" placeholder="Titel...">
+                <button onclick="searchPodcasts()">Suchen</button>
+                
+            </div>
+            <div class=" fav-div" id="search"></div>
+            <div class="podcast-recommended"></div>
+            <div id="status-message"></div>
+            <div class="unterüberschrift"> Empfohlene Podcasts</div>
+            <div id="podcast-list" class="grid"></div>
+            <div class="unterüberschrift"> Kategorien</div>
+            <div class="category-container" id="categoryContainer"></div>
+            <div id="category-search-monitor" class="unterüberschrift"></div>
+            <div class="grid" id="categoryResult"></div>
+            <div class="unterüberschrift" id="newestEpisodes"> Die neusten Folgen deiner Favoriten</div>
+            <div id="fav-div" class="div fav-div"></div>
+            
+            
+
+      
+    </main>
+    <footer class="footer">
+        <div class="footer-section footer-left">
+            <span>Easy Play</span>
+        </div>
+        <div class="footer-section footer-center">
+            
+            <a href="#"></a>
+        </div>
+        <div class="footer-section footer-right">
+            <a href="/hilfe.html">Hilfe</a>
+        </div>
+    </footer>
+
+    <script src="/js/main.js" defer="">
+</script>
+    <script src="/js/ui-interactions.js" defer=""></script>
+    <script src="/index.3bb0576c.js"></script>
+
+</body>
+</html>
