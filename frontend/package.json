@@ -2,7 +2,7 @@
   "name": "podcastkopie",
   "version": "1.0.0",
   "description": "Das Projekt haben wir hauptsächlich auf GitHub entwickelt, da das Gitlab uns leider Probleme bereitet hat.",
-  "source": ["./src/index.html","./src/fav.html","./src/hilfe.html","./src/podcastDash.html","./src/js/favourites.js","./src/js/main.js","./src/js/podcastDash.js","./src/js/ui-interactions.js"],
+  "source": ["./src/index.html","./src/fav.html","./src/hilfe.html","./src/podcastDash.html","./src/js/favourites.js","./src/js/main.js","./src/js/podcastDash.js","./src/js/ui-interactions.js", "./src/profil.html","./src/js/logout.js"],
   "scripts": {
     "test": "playwright test",
     "start": "parcel --no-cache",
