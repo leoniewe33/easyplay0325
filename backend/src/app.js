@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
+const bcrypt = require("bcrypt");
 
 const UserSchema = new mongoose.Schema({
     username: String,
@@ -188,4 +189,30 @@ function isLoggedIn(req, res, next) {
 
 app.listen(EXP_PORT, () => {
     console.log(`Server läuft auf Port ${EXP_PORT}`);
+});
+
+
+app.post('/changeUsername', async (req, res) => {
+    const { newUsername } = req.body;
+
+    if (!newUsername) {
+        return res.json({ status: "FAILED", message: "Fehlende Eingabe des neuen Benutzernamens" });
+    }
+
+    try {
+        // Benutzer aus der Datenbank finden, basierend auf der aktuell eingeloggten Session
+        const user = await User.findById(req.user._id); // req.user kommt von passport
+        if (!user) {
+            return res.json({ status: "FAILED", message: "Benutzer nicht gefunden" });
+        }
+
+        // Benutzername aktualisieren
+        user.username = newUsername;
+        await user.save();
+
+        res.json({ status: "SUCCESS", message: "Benutzername erfolgreich geändert" });
+    } catch (error) {
+        console.log(error);
+        res.json({ status: "FAILED", message: "Fehler beim Ändern des Benutzernamens" });
+    }
 });

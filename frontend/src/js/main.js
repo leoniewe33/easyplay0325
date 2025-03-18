@@ -524,3 +524,23 @@ async function loadDropDownWithoutReg() {
         console.error("Fehler beim Abrufen des Login-Status:", err);
     }
 }
+
+document.getElementById("changeUsernameButton").addEventListener("click", async function (event) {
+    event.preventDefault();
+
+    const newUsername = document.getElementById("newUsername").value; // Neuer Benutzername
+
+    // Anfrage zum Ändern des Benutzernamens senden
+    const response = await fetch("http://localhost:10045/changeUsername", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('sessionID') // optional, wenn JWT verwendet wird
+        },
+        body: JSON.stringify({ newUsername })
+    });
+
+    const result = await response.json();
+    alert(result.message);
+});
+

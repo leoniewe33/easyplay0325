@@ -153,7 +153,6 @@ body.drawer-open .drawer {
 
 main{
   margin-top: 90px;
-  display: flex;
   padding: 20px;
   width: 100%;
   background-color: white;
@@ -171,18 +170,16 @@ main{
   position: absolute;
 }
 .container-profil{
-  display: grid;
-   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
    gap: 20px;
    padding: 20px;
    width: 100%;
-   grid-auto-flow: column;   
-   grid-auto-columns: minmax(200px, 1fr); 
-   overflow-x: auto;   
+   grid-auto-flow: row;   
    overflow-y: hidden;
+   overflow-x: hidden;
    /*justify-items: start; /* Elemente im Grid linksbündig ausrichten */
-   grid-auto-flow: column;
-   /*max-width: fit-content;*/
+   max-width: 100%;
   
 }
 
