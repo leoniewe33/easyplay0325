@@ -160,6 +160,38 @@ main{
   flex: 1;
   border-bottom: 1px solid #797272;
 }
+.profilPage {
+  text-align: center;
+  justify-self: center;
+  align-items: center;
+  position: relative;
+  }
+
+.profilHead {
+  position: absolute;
+}
+.container-profil{
+  display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+   gap: 20px;
+   padding: 20px;
+   width: 100%;
+   grid-auto-flow: column;   
+   grid-auto-columns: minmax(200px, 1fr); 
+   overflow-x: auto;   
+   overflow-y: hidden;
+   /*justify-items: start; /* Elemente im Grid linksbündig ausrichten */
+   grid-auto-flow: column;
+   /*max-width: fit-content;*/
+  
+}
+
+.profil-button{
+  background-color: #e2dede ;
+  height: 300px;
+  border-radius: 1em ;
+}
+
 
 /*Hilfe*/
 .help-content {
