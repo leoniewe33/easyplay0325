@@ -200,7 +200,14 @@ app.put('/user/username', isLoggedIn, async (req, res) => {
         user.username = newUsername;
         await user.save();
 
-        res.json({ message: 'Benutzername erfolgreich geändert', user: user });
+        // Aktualisiere die Session des Benutzers
+        req.login(user, (err) => {
+            if (err) {
+                return res.status(500).json({ message: 'Fehler beim Aktualisieren der Session' });
+            }
+            res.json({ message: 'Benutzername erfolgreich geändert', user: user });
+        });
+
     } catch (err) {
         res.status(500).json({ message: 'Fehler beim Ändern des Benutzernamens', error: err.message });
     }
@@ -249,4 +256,25 @@ app.listen(EXP_PORT, () => {
 });
 
 
+// Account löschen
+app.delete('/user/delete', isLoggedIn, async (req, res) => {
+    try {
+        // Versuche, den Benutzer anhand seiner ID zu löschen
+        const user = await User.findByIdAndDelete(req.user._id);
 
+        if (!user) {
+            return res.status(404).json({ message: 'Benutzer nicht gefunden' });
+        }
+
+        // Logout den Benutzer nach der Löschung
+        req.logout((err) => {
+            if (err) {
+                return res.status(500).json({ message: 'Fehler beim Logout' });
+            }
+            // Sende eine Antwort zurück, die den Erfolg des Löschens und des Logouts bestätigt
+            res.json({ message: 'Benutzer erfolgreich gelöscht und abgemeldet' });
+        });
+    } catch (err) {
+        res.status(500).json({ message: 'Fehler beim Löschen des Benutzers', error: err.message });
+    }
+});

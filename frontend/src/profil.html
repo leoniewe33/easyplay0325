@@ -86,7 +86,15 @@
         
             <div class="profil-button">
                 <p class="profil-format">Hier kannst du dein Passwort ändern</p>
-                <p>Account löschen</p>
+                <form id="changeUsernameForm">
+                    <div class="profil-form-group">
+                        <!--label for="newUsername">Neuer Benutzername:</label-->
+                        <input type="text" id="newPasswort" placeholder="Neues Passwort eingeben..." required />
+                    </div>
+                    <input type="hidden" id="userId" value="USER_ID" />
+                    <button type="button" id="changePasswortButton" class="btn-speichern-profil">speichern</button>
+                </form>
+                <button class="btn-speichern-profil" id="deleteAccountButton">oder deinen Account löschen</button>
             </div>
         </div>
         
