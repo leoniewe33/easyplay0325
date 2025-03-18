@@ -79,7 +79,7 @@ removeBtn.onclick = function(event) {
 event.preventDefault();
 removeFavourite(id);
 podcastDiv.remove();
-location.reload(); // Aktualisiert die Seite
+// Aktualisiert die Seite
 };
 link.href = `podcastDash.html?id=${encodeURIComponent(id)}`;
 //podcastLink.target = "_blank"; besser fürs Abspielen im Hintergrund aber nervig, da zu viele Tabs
@@ -100,16 +100,29 @@ document.getElementById('podcast-list').innerHTML = '<p class="loading-message">
 }
 
 //entfernen eines Favoriten
-function removeFavourite(podcastId) {
-let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-console.log(podcastId);
-favorites = favorites.filter(id => id !== podcastId);
-localStorage.setItem('favorites', JSON.stringify(favorites));
-}
-   document.getElementById('closeButton').addEventListener('click', function() {
-    document.body.classList.remove('drawer-open');
- });
+async function removeFavourite(podcastId) {
+    console.log("PodcastID:" + podcastId);
+    try {
+        const response = await fetch(`http://localhost:10045/favorites/${podcastId}`, {
+            method: 'DELETE',
+            credentials: 'include', // Stellt sicher, dass der Benutzer angemeldet ist
+        });
 
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Fehler beim Entfernen des Favoriten:', errorData.message || 'Unbekannter Fehler');
+            return;
+        }
+
+        const data = await response.json();
+
+        // Favorit erfolgreich entfernt, das UI aktualisieren
+        console.log(data.message);
+        location.reload();  // Seite neu laden, um die Favoritenliste zu aktualisieren
+    } catch (error) {
+        console.error("Fehler beim Entfernen des Favoriten:", error);
+    }
+}
 
 
  //Funktionen für die Animationen
