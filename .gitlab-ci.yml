@@ -30,6 +30,7 @@ build_backend:
 deploy_frontend:
   before_script:
     - cd frontend
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   stage: deploy
   image:
     name: gcr.io/kaniko-project/executor:debug
@@ -46,6 +47,7 @@ deploy_frontend:
 deploy_backend:
   before_script:
     - cd backend
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   stage: deploy
   image:
     name: gcr.io/kaniko-project/executor:debug
