@@ -30,11 +30,8 @@ build_backend:
 deploy_frontend:
   before_script:
     - cd frontend
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   stage: deploy
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
+  image: gcr.io/kaniko-project/executor:debug
   script:
     - cd prod
     - ls
@@ -43,18 +40,19 @@ deploy_frontend:
         --context "${CI_PROJECT_DIR}/frontend"
         --dockerfile "${CI_PROJECT_DIR}/frontend/dockerfile"
         --destination "${CI_REGISTRY_IMAGE}/frontend:latest"
+  variables:
+    DOCKER_CONFIG: "/kaniko/.docker"
 
 deploy_backend:
   before_script:
     - cd backend
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   stage: deploy
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
+  image: gcr.io/kaniko-project/executor:debug
   script:
     - echo Writing docker image to registry $CI_REGISTRY_IMAGE
     - /kaniko/executor
         --context "${CI_PROJECT_DIR}/backend"
         --dockerfile "${CI_PROJECT_DIR}/backend/dockerfile"
         --destination "${CI_REGISTRY_IMAGE}/backend:latest"
+  variables:
+    DOCKER_CONFIG: "/kaniko/.docker"
