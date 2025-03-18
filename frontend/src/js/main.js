@@ -474,7 +474,8 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
         profilePicture.src = userHaken;
         console.log("Benutzer ist angemeldet:", result.user);
         loadDropDownWithoutReg();
-    
+        const test = document.getElementById("HelloText");
+        test.innerHTML = result.user.username;
 }};
 
 async function loadDropDownWithoutReg() {
