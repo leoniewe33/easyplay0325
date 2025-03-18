@@ -33,7 +33,7 @@ document.getElementById('searchButton').addEventListener('click', function() {
 async function loadFavorites()
 {
     try {
-        const response = await fetch('http://localhost:10042/favorites', {
+        const response = await fetch('http://localhost:10045/favorites', {
             credentials: 'include'
         });
 

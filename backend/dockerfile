@@ -1,6 +1,6 @@
 FROM node:18
 
-WORKDIR /app
+WORKDIR /src
 
 COPY package.json package-lock.json ./
 
@@ -8,6 +8,6 @@ RUN npm install --production
 
 COPY . .
 
-EXPOSE 10042
+EXPOSE 10045
 
 CMD ["node", "app.js"]

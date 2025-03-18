@@ -216,7 +216,7 @@ async function addFavourite() {
     const podcastId = getQueryParams().id;
 
     try {
-        const response = await fetch('http://localhost:10042/favorites', {
+        const response = await fetch('http://localhost:10045/favorites', {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -239,7 +239,7 @@ async function addFavourite() {
 
 async function loadFavorites() {
     try {
-        const response = await fetch('http://localhost:10042/favorites', {
+        const response = await fetch('http://localhost:10045/favorites', {
             credentials: 'include'
         });
 

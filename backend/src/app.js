@@ -19,7 +19,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const EXP_PORT = 10042;
+const EXP_PORT = 10045;
 
 app.use(express.json());
 app.use(cors({
