@@ -60,13 +60,6 @@
             getPodcast(id);
             fetchAudio(id,episodeCount);
             const podcastId = getQueryParams().id;
-        
-            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        
-            if (favorites.includes(podcastId)) {
-            document.getElementById("fav-btn-image").src=Haken;
-            } else {
-            }
     
     
             const searchInput = document.getElementById('search-title');
@@ -210,6 +203,12 @@ function insertEpisodes(data) {
         description.className = "episode-description";
         resultsDiv.appendChild(description);
     });
+    const loadingAnimation = document.getElementById('loadingAnimation');
+    if (loadingAnimation) {
+        loadingAnimation.style.animationPlayState = 'paused'; // Pause the animation
+    } else {
+        console.error("Loading animation element not found.");
+    }
 }
 async function addFavourite() {
     console.log("Favorit wird gespeichert...");
@@ -255,7 +254,6 @@ async function loadFavorites() {
     }
 }
 
-    //Speichern des Fortschritts in einer Folge durch Local-Cache
     document.addEventListener('DOMContentLoaded', function() {
     const audioPlayer = document.getElementById('audio-player');
     audioPlayer.addEventListener('timeupdate', function() {
