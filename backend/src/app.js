@@ -127,9 +127,6 @@ app.get("/session", (req, res) => {
     }
 });
 
-app.get("/secret", isLoggedIn, (req, res) => {
-    res.json({ message: "Willkommen auf der geheimen Seite!" });
-});
 app.post('/favorites', async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).json({ message: "Nicht eingeloggt" });
 
@@ -157,6 +154,31 @@ app.get('/favorites', async (req, res) => {
 
     const user = await User.findById(req.user._id);
     res.json({ favorites: user.favorites });
+});
+
+app.delete('/favorites/:podcastId', async (req, res) => {
+    if (!req.isAuthenticated()) return res.status(401).json({ message: "Nicht eingeloggt" });
+
+    const podcastId = req.params.podcastId;
+
+    try {
+        // 1. Update des User-Dokuments: Entferne podcastId aus dem favorites-Array
+        const result = await User.updateOne(
+            { _id: req.user._id }, 
+            { $pull: { favorites: podcastId } }  // $pull entfernt das Element aus dem Array
+        );
+
+        // 2. Überprüfe, ob das Element tatsächlich entfernt wurde
+        if (result.modifiedCount === 0) {
+            return res.status(404).json({ message: "Favorit nicht gefunden" });
+        }
+
+        // 3. Gib die aktualisierten Favoriten zurück
+        const updatedUser = await User.findById(req.user._id);
+        res.json({ message: "Favorit entfernt", favorites: updatedUser.favorites });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 function isLoggedIn(req, res, next) {
