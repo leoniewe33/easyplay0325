@@ -436,7 +436,7 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
     const password = document.getElementById("reg-passwd").value;
   
     try {
-      const response = await fetch("http://localhost:10042/register", {
+      const response = await fetch("http://localhost:10045/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password })
@@ -450,7 +450,7 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
     }
   });
   async function checkLoginStatus() {
-    const response = await fetch("http://localhost:10042/session", { credentials: "include" });
+    const response = await fetch("http://localhost:10045/session", { credentials: "include" });
     const result = await response.json();
     profilePicture = document.getElementById("IconShow");
 
@@ -483,7 +483,7 @@ async function loadDropDownWithoutReg() {
     document.body.appendChild(dropdown);
 
     try {
-        const response = await fetch("http://localhost:10042/session", { credentials: "include" });
+        const response = await fetch("http://localhost:10045/session", { credentials: "include" });
         const data = await response.json();
 
         if (data.loggedIn) {
