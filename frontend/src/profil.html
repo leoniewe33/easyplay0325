@@ -74,16 +74,26 @@
         <div class="container-profil">
             <div class="profil-button">
                 <p class="profil-format">Hier kannst du deinen Benutzernamen ändern</p>
+                <form id="changeUsernameForm">
+                    <div class="form-group">
+                        <label for="newUsername">Neuer Benutzername:</label>
+                        <input type="text" id="newUsername" placeholder="Neuen Benutzernamen eingeben" required />
+                    </div>
+                    <input type="hidden" id="userId" value="USER_ID" /> 
+                    <button type="button" id="changeUsernameButton">Benutzernamen ändern</button>
+                </form>
             </div>
+        
             <div class="profil-button">
                 <p class="profil-format">Hier kannst du dein Passwort ändern</p>
                 <p>Account löschen</p>
             </div>
+        
             <div class="profil-button">
                 <p class="profil-format"></p>
             </div>
-
         </div>
+        
     
      
       
