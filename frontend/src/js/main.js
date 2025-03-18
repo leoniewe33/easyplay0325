@@ -27,18 +27,33 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.error("Search input field not found");
     }
-    //Wenn man keine Favoriten hat, wird das Panel nicht angezeigt --> wirkt cleaner
-    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    console.log(favorites);
-    if (favorites.length === 0) {
-    document.getElementById("newestEpisodes").innerHTML = '';
-    } else {
-    favorites.forEach(element => {
-        insertFavouriteEpisodes(element);
-    });
-}
-
+    
+    fetchFavourites();
 });
+
+async function fetchFavourites()
+{
+    try {
+        const response = await fetch('http://localhost:10045/favorites', {
+            credentials: 'include'
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            if (data.favorites.forEach(element => {
+                insertFavouriteEpisodes(element);
+            }));
+            if(data.favorites == 0)
+            {   //Wenn man keine Favoriten hat, wird das Panel nicht angezeigt --> wirkt cleaner
+                var div = document.getElementById("newestEpisodes");
+                div.innerHTML = "";
+            }
+        }
+    } catch (error) {
+        console.error("Fehler beim Abrufen der Favoriten:", error);
+    }
+    
+}
 
 //Einfügen der neusten Episoden der Lieblingspodcasts
 async function insertFavouriteEpisodes(id){
@@ -459,8 +474,6 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
         profilePicture.src = userHaken;
         console.log("Benutzer ist angemeldet:", result.user);
         loadDropDownWithoutReg();
-        const text = document.getElementById("HelloText");
-        text.innerHTML = result.user.username;
     
 }};
 

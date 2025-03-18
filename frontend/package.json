@@ -5,7 +5,7 @@
   "source": ["./src/index.html","./src/fav.html","./src/hilfe.html","./src/podcastDash.html","./src/js/favourites.js","./src/js/main.js","./src/js/podcastDash.js","./src/js/ui-interactions.js"],
   "scripts": {
     "test": "playwright test",
-    "start": "parcel",
+    "start": "parcel --no-cache",
     "build": "parcel build --dist-dir prod"
   },
   "author": "",
