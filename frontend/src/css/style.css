@@ -167,20 +167,19 @@ main{
   }
 
 .profilHead {
-  position: absolute;
 }
 .container-profil{
    display: grid;
    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
    gap: 20px;
    padding: 20px;
-   width: 100%;
    grid-auto-flow: row;   
    overflow-y: hidden;
    overflow-x: hidden;
    /*justify-items: start; /* Elemente im Grid linksbündig ausrichten */
    max-width: 100%;
-  
+   margin-left: 10%;
+   margin-right: 10%;
 }
 
 .profil-button{
@@ -188,7 +187,31 @@ main{
   height: 300px;
   border-radius: 1em ;
 }
+.btn-speichern-profil{
+  padding: 0.5em 1em;
+  font-size: 1em;
+  background: rgb(45, 45, 45);
+  border: thin solid #333;
+  color: white;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  width: 30%;
+}
 
+.profil-format{
+  margin-top: 15%;
+}
+.profil-form-group input{
+  flex-grow: 1; /* Input-Feld füllt den restlichen Platz */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 30px;
+  margin-bottom: 5%;
+  font-size: 15px;
+  color: rgb(77, 73, 73);
+  width: 70%;
+}
 
 /*Hilfe*/
 .help-content {

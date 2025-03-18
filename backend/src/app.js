@@ -181,6 +181,63 @@ app.delete('/favorites/:podcastId', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+// Ändern des Benutzernamens
+app.put('/user/username', isLoggedIn, async (req, res) => {
+    const { newUsername } = req.body;
+
+    if (!newUsername) {
+        return res.status(400).json({ message: 'Neuer Benutzername ist erforderlich' });
+    }
+
+    try {
+        // Aktualisiere den Benutzernamen
+        const user = await User.findById(req.user._id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'Benutzer nicht gefunden' });
+        }
+
+        user.username = newUsername;
+        await user.save();
+
+        res.json({ message: 'Benutzername erfolgreich geändert', user: user });
+    } catch (err) {
+        res.status(500).json({ message: 'Fehler beim Ändern des Benutzernamens', error: err.message });
+    }
+});
+
+// Ändern des Passworts
+app.put('/user/password', isLoggedIn, async (req, res) => {
+    const { oldPassword, newPassword } = req.body;
+
+    if (!oldPassword || !newPassword) {
+        return res.status(400).json({ message: 'Altes und neues Passwort sind erforderlich' });
+    }
+
+    try {
+        // Überprüfen des alten Passworts
+        const user = await User.findById(req.user._id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'Benutzer nicht gefunden' });
+        }
+
+        // Überprüfe, ob das alte Passwort korrekt ist
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Altes Passwort ist falsch' });
+        }
+
+        // Setze das neue Passwort (nach Hashing)
+        user.password = await bcrypt.hash(newPassword, 10);
+        await user.save();
+
+        res.json({ message: 'Passwort erfolgreich geändert' });
+    } catch (err) {
+        res.status(500).json({ message: 'Fehler beim Ändern des Passworts', error: err.message });
+    }
+});
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) return next();
@@ -192,27 +249,4 @@ app.listen(EXP_PORT, () => {
 });
 
 
-app.post('/changeUsername', async (req, res) => {
-    const { newUsername } = req.body;
 
-    if (!newUsername) {
-        return res.json({ status: "FAILED", message: "Fehlende Eingabe des neuen Benutzernamens" });
-    }
-
-    try {
-        // Benutzer aus der Datenbank finden, basierend auf der aktuell eingeloggten Session
-        const user = await User.findById(req.user._id); // req.user kommt von passport
-        if (!user) {
-            return res.json({ status: "FAILED", message: "Benutzer nicht gefunden" });
-        }
-
-        // Benutzername aktualisieren
-        user.username = newUsername;
-        await user.save();
-
-        res.json({ status: "SUCCESS", message: "Benutzername erfolgreich geändert" });
-    } catch (error) {
-        console.log(error);
-        res.json({ status: "FAILED", message: "Fehler beim Ändern des Benutzernamens" });
-    }
-});

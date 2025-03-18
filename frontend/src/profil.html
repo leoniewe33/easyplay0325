@@ -76,21 +76,17 @@
                 <p class="profil-format">Hier kannst du deinen Benutzernamen ändern</p>
                 <form id="changeUsernameForm">
                     <div class="profil-form-group">
-                        <label for="newUsername">Neuer Benutzername:</label>
-                        <input type="text" id="newUsername" placeholder="Neuen Benutzernamen eingeben" required />
+                        <!--label for="newUsername">Neuer Benutzername:</label-->
+                        <input type="text" id="newUsername" placeholder="Neuen Benutzernamen eingeben..." required />
                     </div>
-                    <input type="hidden" id="userId" value="USER_ID" /> 
-                    <button type="button" id="changeUsernameButton">Benutzernamen ändern</button>
+                    <input type="hidden" id="userId" value="USER_ID" />
+                    <button type="button" id="changeUsernameButton" class="btn-speichern-profil">speichern</button>
                 </form>
             </div>
         
             <div class="profil-button">
                 <p class="profil-format">Hier kannst du dein Passwort ändern</p>
                 <p>Account löschen</p>
-            </div>
-        
-            <div class="profil-button">
-                <p class="profil-format"></p>
             </div>
         </div>
         
@@ -110,6 +106,7 @@
             <a href="hilfe.html">Hilfe</a>
         </div>
     </footer>
+    <script src="js/profil.js"></script>
     <script src="js/main.js"  type = "module"> </script>
     <script src="js/ui-interactions.js"  type = "module"></script>
     <script src="js/logout.js"></script>
