@@ -102,11 +102,16 @@ app.post('/user', async (req, res) => {
 
 app.post("/register", async (req, res) => {
     const { username, password } = req.body;
-
     if (!username || !password) {
         return res.status(400).json({ message: "Bitte alle Felder ausfüllen!" });
     }
-
+    prüf = await User.findOne({username});
+    if(prüf){
+        return res.status(400).json({
+            error: true,
+            message: "Username existiert bereits. Bitte wähle einen anderen!",
+          });
+    }
     try {
         const newUser = new User({ username });
         await User.register(newUser, password);
@@ -117,7 +122,13 @@ app.post("/register", async (req, res) => {
 });
 
 app.post("/login", passport.authenticate("local"), (req, res) => {
+
+    const {username, password} = req.body;
+    if (!username || !password) {
+        return res.status(400).json({ message: "Bitte alle Felder ausfüllen!" });
+    }
     res.json({ message: "Login erfolgreich", user: req.user });
+
 });
 
 app.get("/logout", (req, res, next) => {

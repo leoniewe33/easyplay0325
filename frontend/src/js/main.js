@@ -431,7 +431,13 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
   
     const user = document.getElementById("user").value;
     const password = document.getElementById("passwd").value;
-  
+
+    if (!user || !password) {
+        alert("Bitte alle Felder ausfüllen!");
+        return;
+    }
+   
+  try{
     const response = await fetch("http://localhost:10045/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -443,6 +449,11 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
     alert(result.message);
     window.location.reload();
     checkLoginStatus();
+  } catch(error){
+    console.error("Fehler bei der Anmeldung:", error);
+    alert("Anmeldung fehlgeschlagen!");
+  }
+ 
 
   });
   
