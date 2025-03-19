@@ -1,25 +1,40 @@
 
 document.getElementById("changeUsernameButton").addEventListener("click", async () => {
-    const newUsername = document.getElementById("newUsername").value.trim();
+  const newUsername = document.getElementById("newUsername").value.trim();
 
-    if (!newUsername) {
-        console.log("Bitte einen neuen Benutzernamen eingeben.");
-        return;
-    }
+  if (!newUsername) {
+      console.log("Bitte einen neuen Benutzernamen eingeben.");
+      alert("Bitte einen neuen Benutzernamen eingeben.");
+      return;
+  }
 
-    console.log("Gesendete Daten:", { newUsername });
+  console.log("Gesendete Daten:", { newUsername });
 
-    const response = await fetch("http://localhost:10045/user/username", { 
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ newUsername }),
-        credentials: "include"
-    });
+  try {
+      const response = await fetch("http://localhost:10045/user/username", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ newUsername }),
+          credentials: "include"
+      });
 
-    const result = await response.json();
-    console.log("Antwort vom Server:", result);
-    window.location.reload();
+      const result = await response.json();
+      console.log("Antwort vom Server:", result);
+
+      if (!response.ok) {
+          // Handle the error if username already exists
+          alert(result.message || "Fehler beim Ändern des Benutzernamens.");
+      } else {
+          alert(result.message); // Success message
+          window.location.reload(); // Reload the page to reflect the changes
+      }
+
+  } catch (error) {
+      console.error("Fehler beim Ändern des Benutzernamens:", error);
+      alert("Es gab einen Fehler beim Ändern des Benutzernamens.");
+  }
 });
+
 
 document.getElementById("changePasswortButton").addEventListener("click", async () => {
     const newPassword = document.getElementById("newPasswort").value.trim();

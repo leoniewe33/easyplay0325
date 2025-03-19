@@ -23,6 +23,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const cors = require('cors');
 const path = require('path');
+const { userInfo } = require('os');
 
 const app = express();
 const EXP_PORT = 10045;
@@ -209,8 +210,15 @@ app.put('/user/username', isLoggedIn, async (req, res) => {
     if (!newUsername) {
         return res.status(400).json({ message: 'Neuer Benutzername ist erforderlich' });
     }
-
+   
     try {
+        prüf = await User.findOne({ username: newUsername });
+        if(prüf){
+            return res.status(400).json({
+                error: true,
+                message: "Username existiert bereits. Bitte wähle einen anderen!",
+              });
+        }
         // Aktualisiere den Benutzernamen
         const user = await User.findById(req.user._id);
 
