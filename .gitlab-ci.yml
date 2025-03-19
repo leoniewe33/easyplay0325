@@ -2,62 +2,57 @@ stages:
   - build
   - deploy
 
-variables:
-  # Gemeinsame Variablen
-  DOCKER_CONFIG: "/kaniko/.docker"
-  FRONTEND_IMAGE: "${CI_REGISTRY_IMAGE}/frontend:${CI_COMMIT_SHORT_SHA}"
-  BACKEND_IMAGE: "${CI_REGISTRY_IMAGE}/backend:${CI_COMMIT_SHORT_SHA}"
-
-cache: # Cache für node_modules
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - frontend/node_modules/
-    - backend/node_modules/
-
 build_frontend:
+  before_script:
+    - cd frontend
   stage: build
   image: node:22-alpine
   script:
-    - cd frontend
-    - npm install --frozen-lockfile
+    - npm install
     - npm run build
+  variables:
+    PARCEL_WORKERS: 0
   artifacts:
     paths:
-      - frontend/prod/ 
-    expire_in: 1 hour
+      - frontend/prod/
 
 build_backend:
+  before_script:
+    - cd backend
   stage: build
   image: node:22-alpine
   script:
-    - cd backend
-    - npm install --production --frozen-lockfile
+    - npm install
   artifacts:
     paths:
       - backend/
-    expire_in: 1 hour
 
 deploy_frontend:
+  before_script:
+    - cd frontend
   stage: deploy
   image: gcr.io/kaniko-project/executor:debug
-  needs: ["build_frontend"]
   script:
-    - echo "Building Frontend-Image: ${FRONTEND_IMAGE}"
+    - cd prod
+    - ls
+    - echo Writing docker image to registry $CI_REGISTRY_IMAGE
     - /kaniko/executor
         --context "${CI_PROJECT_DIR}/frontend"
-        --dockerfile "${CI_PROJECT_DIR}/frontend/Dockerfile"
-        --destination "${FRONTEND_IMAGE}"
-        --cache=true
+        --dockerfile "${CI_PROJECT_DIR}/frontend/dockerfile"
+        --destination "${CI_REGISTRY_IMAGE}/frontend:latest"
+  variables:
+    DOCKER_CONFIG: "/kaniko/.docker"
 
 deploy_backend:
+  before_script:
+    - cd backend
   stage: deploy
   image: gcr.io/kaniko-project/executor:debug
-  needs: ["build_backend"]
   script:
-    - echo "Building Backend-Image: ${BACKEND_IMAGE}"
+    - echo Writing docker image to registry $CI_REGISTRY_IMAGE
     - /kaniko/executor
         --context "${CI_PROJECT_DIR}/backend"
-        --dockerfile "${CI_PROJECT_DIR}/backend/Dockerfile"
-        --destination "${BACKEND_IMAGE}"
-        --build-arg NODE_ENV=production
-        --cache=true
+        --dockerfile "${CI_PROJECT_DIR}/backend/dockerfile"
+        --destination "${CI_REGISTRY_IMAGE}/backend:latest"
+  variables:
+    DOCKER_CONFIG: "/kaniko/.docker"
