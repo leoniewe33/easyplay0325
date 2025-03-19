@@ -4,6 +4,8 @@ const passportLocalMongoose = require('passport-local-mongoose');
 const bcrypt = require("bcrypt");
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const LogSchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
@@ -12,6 +14,9 @@ const LogSchema = new mongoose.Schema({
     action: String,
     details: String
 });
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const Log = mongoose.model('Log', LogSchema);
 
@@ -95,6 +100,8 @@ passport.deserializeUser(User.deserializeUser());
 
 mongoose.connect(mongoURI).then(() => console.log('MongoDB verbunden'))
     .catch(err => console.error('Fehler bei MongoDB-Verbindung:', err));
+
+app.use(express.static(path.join(__dirname, '../frontend/src')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/src/index.html"));
