@@ -50,11 +50,11 @@ const path = require('path');
 const { userInfo } = require('os');
 
 const app = express();
-const EXP_PORT = 10045;
+const EXP_PORT = 3000;
 
 app.use(
     session({
-        secret: "geheimes-passwort",
+        secret: "e53990a04f75dc79f5a045daffd2b5c4debf4b9ca72b6de42f0",
         resave: false,
         saveUninitialized: false,
         store: MongoStore.create({
@@ -71,7 +71,7 @@ app.use(
 
 app.use(express.json());
 app.use(cors({
-    origin: ["https://webengineering.ins.hs-anhalt.de:10041","https://webengineering.ins.hs-anhalt.de","http://localhost:1234"],
+    origin: "http://frontend'",
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));

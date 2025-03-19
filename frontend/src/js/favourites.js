@@ -33,7 +33,7 @@ document.getElementById('searchButton').addEventListener('click', function() {
 async function loadFavorites()
 {
     try {
-        const response = await fetch('http://webengineering.ins.hs-anhalt.de:10045/favorites', {
+        const response = await fetch('http://backend:3000/favorites', {
             credentials: 'include'
         });
 
@@ -103,7 +103,7 @@ document.getElementById('podcast-list').innerHTML = '<p class="loading-message">
 async function removeFavourite(podcastId) {
     console.log("PodcastID:" + podcastId);
     try {
-        const response = await fetch(`http://webengineering.ins.hs-anhalt.de:10045/favorites/${podcastId}`, {
+        const response = await fetch(`http://backend:3000/favorites/${podcastId}`, {
             method: 'DELETE',
             credentials: 'include', // Stellt sicher, dass der Benutzer angemeldet ist
         });

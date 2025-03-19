@@ -215,7 +215,7 @@ async function addFavourite() {
     const podcastId = getQueryParams().id;
 
     try {
-        const response = await fetch('http://webengineering.ins.hs-anhalt.de:10045/favorites', {
+        const response = await fetch('http://backend:3000/favorites', {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -238,7 +238,7 @@ async function addFavourite() {
 
 async function loadFavorites() {
     try {
-        const response = await fetch('http://webengineering.ins.hs-anhalt.de:10045/favorites', {
+        const response = await fetch('http://backend:3000/favorites', {
             credentials: 'include'
         });
 
@@ -350,7 +350,7 @@ async function saveTimestamp(podcastId, episodeUrl, timestamp) {
         // Erstelle eine eindeutige episodeId aus podcastId und episodeUrl
         const episodeId = `${podcastId}-${encodeURIComponent(episodeUrl)}`;
         
-        await fetch('http://webengineering.ins.hs-anhalt.de:10045/progress', {
+        await fetch('http://backend:3000/progress', {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -366,7 +366,7 @@ async function loadTimestamp(podcastId, episodeUrl) {
     try {
         const episodeId = `${podcastId}-${encodeURIComponent(episodeUrl)}`;
         
-        const response = await fetch(`http://webengineering.ins.hs-anhalt.de:10045/progress?episodeId=${encodeURIComponent(episodeId)}`, {
+        const response = await fetch(`http://backend:3000/progress?episodeId=${encodeURIComponent(episodeId)}`, {
             credentials: 'include'
         });
         
