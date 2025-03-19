@@ -2,7 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
 const bcrypt = require("bcrypt");
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
+const mongoURI = 'mongodb://webengineering.ins.hs-anhalt.de:10043/testdb';
 const UserSchema = new mongoose.Schema({
     username: String,
     password: String,
@@ -18,17 +21,34 @@ const User = mongoose.models.User || mongoose.model('User', UserSchema);
 module.exports = User;
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const session = require('express-session');
 const cors = require('cors');
 const path = require('path');
 
 const app = express();
 const EXP_PORT = 10045;
 
+app.use(
+  session({
+    secret: "geheimes-passwort",
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: mongoURI,
+      ttl: 14 * 24 * 60 * 60 // 14 Tage
+    }),
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60 * 24 // 24 Stunden
+    }
+  })
+);
+
 app.use(express.json());
 app.use(cors({
     origin: "http://localhost:1234",
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 
 app.use(express.urlencoded({ extended: true }));
@@ -48,7 +68,6 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const mongoURI = 'mongodb://webengineering.ins.hs-anhalt.de:10043/testdb';
 mongoose.connect(mongoURI).then(() => console.log('MongoDB verbunden'))
     .catch(err => console.error('Fehler bei MongoDB-Verbindung:', err));
 
@@ -76,18 +95,6 @@ app.post('/user', async (req, res) => {
         const newUser = new User({ name });
         await User.register(newUser, password);
         res.json({ message: 'Benutzer erstellt', user: newUser });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-app.delete('/user/:name', async (req, res) => {
-    try {
-        const result = await User.findOneAndDelete({ name: req.params.name });
-        if (!result) {
-            return res.status(404).json({ error: 'Benutzer nicht gefunden' });
-        }
-        res.json({ message: 'Benutzer gelöscht', user: result });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -166,13 +173,13 @@ app.delete('/favorites/:podcastId', async (req, res) => {
     const podcastId = req.params.podcastId;
 
     try {
-        // 1. Update des User-Dokuments: Entferne podcastId aus dem favorites-Array
+        // Entferne podcastId aus dem favorites-Array
         const result = await User.updateOne(
             { _id: req.user._id }, 
-            { $pull: { favorites: podcastId } }  // $pull entfernt das Element aus dem Array
+            { $pull: { favorites: podcastId } } 
         );
 
-        // 2. Überprüfe, ob das Element tatsächlich entfernt wurde
+        // Überprüfung
         if (result.modifiedCount === 0) {
             return res.status(404).json({ message: "Favorit nicht gefunden" });
         }
@@ -217,7 +224,6 @@ app.put('/user/username', isLoggedIn, async (req, res) => {
 });
 
 // Ändern des Passworts
-// Ändern des Passworts
 app.put('/user/password', isLoggedIn, async (req, res) => {
     const { newPassword } = req.body;
 
@@ -258,25 +264,35 @@ app.listen(EXP_PORT, () => {
 // Account löschen
 app.delete('/user/delete', isLoggedIn, async (req, res) => {
     try {
-        // Versuche, den Benutzer anhand seiner ID zu löschen
-        const user = await User.findByIdAndDelete(req.user._id);
-
-        if (!user) {
-            return res.status(404).json({ message: 'Benutzer nicht gefunden' });
-        }
-
-        // Logout den Benutzer nach der Löschung
-        req.logout((err) => {
-            if (err) {
-                return res.status(500).json({ message: 'Fehler beim Logout' });
-            }
-            // Sende eine Antwort zurück, die den Erfolg des Löschens und des Logouts bestätigt
-            res.json({ message: 'Benutzer erfolgreich gelöscht und abgemeldet' });
+      // 3. Session ZUERST zerstören
+      req.session.destroy(async (err) => {
+        if (err) throw err;
+  
+        // 4. User löschen
+        const deletedUser = await User.findByIdAndDelete(req.user._id);
+        if (!deletedUser) return res.status(404).json({ message: 'User not found' });
+  
+        // 5. Session aus Store löschen
+        await req.sessionStore.destroy(req.sessionID);
+  
+        // 6. Cookie löschen
+        res.clearCookie('connect.sid', {
+          path: '/',
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production'
         });
+  
+        res.json({ message: 'Account erfolgreich gelöscht' });
+      });
+  
     } catch (err) {
-        res.status(500).json({ message: 'Fehler beim Löschen des Benutzers', error: err.message });
+      console.error('Delete error:', err);
+      res.status(500).json({ 
+        message: 'Server error',
+        error: err.message // Detaillierte Fehlermeldung
+      });
     }
-});
+  });
 
 // Ersetze die bestehende /progress-Route durch diese erweiterte Version
 app.post('/progress', async (req, res) => {

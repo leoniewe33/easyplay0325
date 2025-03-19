@@ -12,7 +12,7 @@ checkLoginStatus();
 document.addEventListener('DOMContentLoaded', function() {
     console.log("onLoad Function");
     fetchRecommendedPodcasts();
-    // dcheckLoginStatus();
+    // checkLoginStatus();
     const resultsDiv = document.getElementById('podcast-list');
     resultsDiv.innerHTML = '<p class="loading-message">Empfohlene Podcast werden geladen...</p>';
     getCategories();

@@ -9,11 +9,11 @@ document.getElementById("changeUsernameButton").addEventListener("click", async 
 
     console.log("Gesendete Daten:", { newUsername });
 
-    const response = await fetch("http://localhost:10045/user/username", {  // Falls dein Backend PUT erwartet
+    const response = await fetch("http://localhost:10045/user/username", { 
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ newUsername }),
-        credentials: "include"  // Wichtig, falls deine Session-Cookies mitgesendet werden müssen
+        credentials: "include"
     });
 
     const result = await response.json();
@@ -52,31 +52,31 @@ document.getElementById("changePasswortButton").addEventListener("click", async 
 
 
 document.getElementById("deleteAccountButton").addEventListener("click", async () => {
-    const confirmation = confirm("Möchtest du deinen Account wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.");
+  if (!confirm("Account wirklich löschen?\nDiese Aktion ist unwiderruflich!")) return;
 
-    if (!confirmation) {
-        return;
+  try {
+    const response = await fetch("http://localhost:10045/user/delete", {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(error || 'Löschen fehlgeschlagen');
     }
+    localStorage.clear();
+    sessionStorage.clear();
+    setTimeout(() => {
+      window.location.href = `/index.html?deleted=${Date.now()}`;
+    }, 300);
 
-    try {
-        const response = await fetch("http://localhost:10045/user/delete", {
-            method: "DELETE",
-            credentials: "include"  // Wichtig, um Session-Daten zu senden
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-            // Erfolgsmeldung
-            alert(result.message);
-            // Benutzer zur Login-Seite weiterleiten oder zur Startseite
-            window.location.href = "/login.html";  // Beispiel: Login-Seite
-        } else {
-            // Fehler anzeigen
-            alert("Fehler beim Löschen des Accounts: " + result.message);
-        }
-    } catch (error) {
-        console.error("Fehler beim Löschen des Accounts:", error);
-        alert("Es gab ein Problem beim Löschen des Accounts. Bitte versuche es später noch einmal.");
-    }
+  } catch (error) {
+    console.error('Fehler:', error);
+    alert(`Fehler: ${error.message}`);
+    window.location.reload();
+  }
 });
