@@ -4,8 +4,8 @@ const passportLocalMongoose = require('passport-local-mongoose');
 const bcrypt = require("bcrypt");
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-import path from 'path';
-import { fileURLToPath } from 'url';
+cont path = require('path');
+const fileURLToPath = ('url');
 
 const LogSchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
@@ -84,13 +84,6 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../frontend/src")));
 
-app.use(
-    session({
-        secret: "geheimes-passwort",
-        resave: false,
-        saveUninitialized: false,
-    })
-);
 app.use(passport.initialize());
 app.use(passport.session());
 
