@@ -6,9 +6,12 @@ const bcrypt = require("bcrypt");
 const UserSchema = new mongoose.Schema({
     username: String,
     password: String,
-    favorites: [{ type: String }]
+    favorites: [{ type: String }],
+    progress: [{
+        episodeId: String,
+        timestamp: Number
+    }]
 });
-
 UserSchema.plugin(passportLocalMongoose);
 
 const User = mongoose.models.User || mongoose.model('User', UserSchema);
@@ -276,5 +279,70 @@ app.delete('/user/delete', isLoggedIn, async (req, res) => {
         });
     } catch (err) {
         res.status(500).json({ message: 'Fehler beim Löschen des Benutzers', error: err.message });
+    }
+});
+
+// Ersetze die bestehende /progress-Route durch diese erweiterte Version
+app.post('/progress', async (req, res) => {
+    if (!req.isAuthenticated()) return res.status(401).json({ message: "Nicht eingeloggt" });
+
+    let { episodeId, timestamp } = req.body;
+
+    if (!episodeId || timestamp == null) {
+        return res.status(400).json({ message: "episodeId und timestamp sind erforderlich" });
+    }
+
+    timestamp = Number(timestamp);
+
+    if (isNaN(timestamp) || timestamp < 0) {
+        return res.status(400).json({ message: "Ungültiger timestamp" });
+    }
+
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) return res.status(404).json({ message: "Benutzer nicht gefunden" });
+
+        // Update oder erstelle Progress-Eintrag
+        const existingIndex = user.progress.findIndex(p => p.episodeId === episodeId);
+        
+        if (existingIndex > -1) {
+            user.progress[existingIndex].timestamp = timestamp;
+        } else {
+            user.progress.push({ episodeId, timestamp });
+        }
+
+        await user.save();
+        res.json({ 
+            message: "Fortschritt gespeichert",
+            progress: user.progress.find(p => p.episodeId === episodeId)
+        });
+
+    } catch (err) {
+        res.status(500).json({ 
+            message: "Fehler beim Speichern des Fortschritts", 
+            error: err.message 
+        });
+    }
+});
+
+// Füge eine GET-Route für Progress hinzu
+app.get('/progress', async (req, res) => {
+    if (!req.isAuthenticated()) return res.status(401).json({ message: "Nicht eingeloggt" });
+
+    const { episodeId } = req.query;
+    if (!episodeId) return res.status(400).json({ message: "episodeId erforderlich" });
+
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) return res.status(404).json({ message: "Benutzer nicht gefunden" });
+
+        const progress = user.progress.find(p => p.episodeId === episodeId);
+        res.json({ timestamp: progress ? progress.timestamp : 0 });
+
+    } catch (err) {
+        res.status(500).json({ 
+            message: "Fehler beim Laden des Fortschritts", 
+            error: err.message 
+        });
     }
 });

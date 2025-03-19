@@ -256,18 +256,7 @@ async function loadFavorites() {
 
     document.addEventListener('DOMContentLoaded', function() {
     const audioPlayer = document.getElementById('audio-player');
-    audioPlayer.addEventListener('timeupdate', function() {
-        if (URLplaying) {
-            const podcastId = getQueryParams().id + '-' + URLplaying;//Custom id aus PodcastID und der URL der Episode
-            localStorage.setItem(`podcast-${podcastId}-progress`, audioPlayer.currentTime);
-        }
-    });
-    window.addEventListener('beforeunload', function() {
-        if (URLplaying) {
-            const podcastId = getQueryParams().id + '-' + URLplaying;
-            localStorage.setItem(`podcast-${podcastId}-progress`, audioPlayer.currentTime);
-        }
-    });
+    
     //Animation anzeigen beim Abspielen bzw. Stoppen
     audioPlayer.addEventListener('play', function() {
         showLoadingAnimation();
@@ -284,23 +273,19 @@ async function loadFavorites() {
 });
 
 //Episode in den Player Laden
-function loadEpisode(episodeUrl) {
+async function loadEpisode(episodeUrl) {
     const audioPlayer = document.getElementById('audio-player');
     const audioSource = document.getElementById('audio-source');
     const audioContainer = document.getElementById('audio-container');
-
-    const podcastId = getQueryParams().id + '-' + episodeUrl;
+    const podcastId = getQueryParams().id;
 
     URLplaying = episodeUrl;
     audioSource.src = episodeUrl;
-    
     audioPlayer.load();
-
     
-    const savedTime = localStorage.getItem(`podcast-${podcastId}-progress`);
-    if (savedTime) {
-        audioPlayer.currentTime = parseFloat(savedTime);
-    }
+    const savedTime = await loadTimestamp(podcastId, episodeUrl);
+    audioPlayer.currentTime = savedTime;
+    
     audioContainer.classList.remove('audio-hidden');
     audioPlayer.play();
 }
@@ -332,6 +317,86 @@ function hideLoadingAnimation() {
         console.error("Loading animation element not found.");
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const audioPlayer = document.getElementById('audio-player');
+    audioPlayer.addEventListener('timeupdate', async function() {
+        if (URLplaying) {
+            const podcastId = getQueryParams().id;
+            const timestamp = audioPlayer.currentTime;
+            await saveTimestamp(podcastId, URLplaying, timestamp);
+        }
+    });
+    window.addEventListener('beforeunload', async function() {
+        if (URLplaying) {
+            const podcastId = getQueryParams().id;
+            const timestamp = audioPlayer.currentTime;
+            await saveTimestamp(podcastId, URLplaying, timestamp);
+        }
+    });
+    audioPlayer.addEventListener('play', function() {
+        showLoadingAnimation();
+    });
+    audioPlayer.addEventListener('pause', function() {
+        hideLoadingAnimation();
+    });
+    audioPlayer.addEventListener('ended', function() {
+        hideLoadingAnimation();
+    });
+});
+
+async function saveTimestamp(podcastId, episodeUrl, timestamp) {
+    try {
+        // Erstelle eine eindeutige episodeId aus podcastId und episodeUrl
+        const episodeId = `${podcastId}-${encodeURIComponent(episodeUrl)}`;
+        
+        await fetch('http://localhost:10045/progress', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ episodeId, timestamp })
+        });
+    } catch (error) {
+        console.error("Fehler beim Speichern des Fortschritts:", error);
+    }
+}
+
+// Zeitstempel laden
+async function loadTimestamp(podcastId, episodeUrl) {
+    try {
+        const episodeId = `${podcastId}-${encodeURIComponent(episodeUrl)}`;
+        
+        const response = await fetch(`http://localhost:10045/progress?episodeId=${encodeURIComponent(episodeId)}`, {
+            credentials: 'include'
+        });
+        
+        if (!response.ok) return 0;
+        const data = await response.json();
+        return data.timestamp || 0;
+    } catch (error) {
+        console.error("Fehler beim Laden des Fortschritts:", error);
+        return 0;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const audioPlayer = document.getElementById('audio-player');
+    
+    audioPlayer.addEventListener('timeupdate', async function() {
+        if (URLplaying) {
+            const podcastId = getQueryParams().id;
+            await saveTimestamp(podcastId, URLplaying, audioPlayer.currentTime);
+        }
+    });
+
+    window.addEventListener('beforeunload', async function() {
+        if (URLplaying) {
+            const podcastId = getQueryParams().id;
+            await saveTimestamp(podcastId, URLplaying, audioPlayer.currentTime);
+        }
+    });
+});
+
 
 window.addFavourite = addFavourite;
 window.fetchNewAudio = fetchNewAudio;
