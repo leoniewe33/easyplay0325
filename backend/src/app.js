@@ -217,38 +217,34 @@ app.put('/user/username', isLoggedIn, async (req, res) => {
 });
 
 // Ändern des Passworts
+// Ändern des Passworts
 app.put('/user/password', isLoggedIn, async (req, res) => {
-    const { oldPassword, newPassword } = req.body;
+    const { newPassword } = req.body;
 
-    if (!oldPassword || !newPassword) {
-        return res.status(400).json({ message: 'Altes und neues Passwort sind erforderlich' });
+    if (!newPassword) {
+        return res.status(400).json({ message: 'Neues Passwort ist erforderlich' });
     }
 
     try {
-        // Überprüfen des alten Passworts
         const user = await User.findById(req.user._id);
-
         if (!user) {
             return res.status(404).json({ message: 'Benutzer nicht gefunden' });
         }
 
-        // Überprüfe, ob das alte Passwort korrekt ist
-        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        // Verwende setPassword von passport-local-mongoose
+        await new Promise((resolve, reject) => {
+            user.setPassword(newPassword, (err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
 
-        if (!isMatch) {
-            return res.status(400).json({ message: 'Altes Passwort ist falsch' });
-        }
-
-        // Setze das neue Passwort (nach Hashing)
-        user.password = await bcrypt.hash(newPassword, 10);
         await user.save();
-
         res.json({ message: 'Passwort erfolgreich geändert' });
     } catch (err) {
         res.status(500).json({ message: 'Fehler beim Ändern des Passworts', error: err.message });
     }
 });
-
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) return next();
     res.status(401).json({ error: "Nicht eingeloggt" });
