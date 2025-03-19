@@ -575,3 +575,8 @@ document.addEventListener("DOMContentLoaded", function() {
         console.error("Button nicht gefunden!");
     }
 });
+
+document.getElementById("IconShow").addEventListener("click", function() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
