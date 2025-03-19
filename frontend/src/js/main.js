@@ -441,7 +441,9 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
   
     const result = await response.json();
     alert(result.message);
+    window.location.reload();
     checkLoginStatus();
+
   });
   
   document.getElementById("registrieren").addEventListener("click", async function () {

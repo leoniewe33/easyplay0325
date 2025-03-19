@@ -23,17 +23,32 @@ document.getElementById("changeUsernameButton").addEventListener("click", async 
 
 document.getElementById("changePasswortButton").addEventListener("click", async () => {
     const newPassword = document.getElementById("newPasswort").value.trim();
-    
-    const response = await fetch("http://localhost:10045/user/password", {  // Falls dein Backend PUT erwartet
+
+    if (!newPassword) {
+        alert("Bitte ein neues Passwort eingeben.");
+        return;
+    }
+
+    console.log("Gesendete Daten:", { newPassword });
+
+    const response = await fetch("http://localhost:10045/user/password", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ newUsername }),
-        credentials: "include"  // Wichtig, falls deine Session-Cookies mitgesendet werden müssen
+        body: JSON.stringify({ newPassword }),
+        credentials: "include" // Falls die Route geschützt ist
     });
 
     const result = await response.json();
     console.log("Antwort vom Server:", result);
-})
+
+    if (response.ok) {
+        alert("Passwort erfolgreich geändert!");
+        window.location.reload();
+    } else {
+        alert("Fehler: " + result.message);
+    }
+});
+
 
 
 document.getElementById("deleteAccountButton").addEventListener("click", async () => {
