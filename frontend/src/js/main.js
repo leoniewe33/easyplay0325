@@ -531,8 +531,8 @@ async function loadDropDownWithoutReg() {
     dropdown.classList.add("user-dropdown");
     dropdown.innerHTML = `
         <ul>
-            <li><a href="profil.html">Profil</a></li>
-            <li id="logoutBtn">Logout</li>
+            <a href="profil.html"><li>Profil</li></a>
+            <a id="logoutBtn"><li>Logout</li></a>
         </ul>
     `;
     dropdown.style.display = "none";
