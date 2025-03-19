@@ -425,10 +425,18 @@ document.getElementById("showLogin").addEventListener("click", function(event) {
     document.querySelector(".form-wrapper").classList.remove("switch-right");
 });
 
+let count= 0;
+let isBlocked = false;  
+let blockTime = 0;
 
 document.getElementById("Anmeldung").addEventListener("click", async function (event) {
     event.preventDefault();
   
+    if (isBlocked) {
+        alert(`Sie können sich nicht mehr anmelden. Versuchen Sie es in ${blockTime} Sekunden erneut.`);
+        return;
+    }
+   
     const user = document.getElementById("user").value;
     const password = document.getElementById("passwd").value;
 
@@ -450,12 +458,31 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
     window.location.reload();
     checkLoginStatus();
   } catch(error){
+    count++;
     console.error("Fehler bei der Anmeldung:", error);
-    alert("Anmeldung fehlgeschlagen!");
-  }
+    alert("Anmeldung fehlgeschlagen! Versuch " + count + " von 5.");
+
+    if (count === 5) {
+        isBlocked = true;
+        blockTime = 30; 
+        alert(`Sie haben 5 Fehlversuche erreicht. Die Anmeldung wird für ${blockTime} Sekunden blockiert.`);
+
+        const timer = setInterval(function () {
+            blockTime--;
+            if (blockTime <= 0) {
+                clearInterval(timer);
+                isBlocked = false; 
+                alert("Die Blockierung wurde aufgehoben. Sie können sich wieder anmelden.");
+                count = 0;
+            }
+        }, 1000);
+    }
+}
+});
+
  
 
-  });
+
   
   document.getElementById("registrieren").addEventListener("click", async function () {
     console.log("Registrierungs-Button wurde geklickt!");
