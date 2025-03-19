@@ -1056,6 +1056,10 @@ box-sizing: border-box;
 position: relative;
 
 }
+.form-container2{
+  box-sizing: border-box;
+  width: 100%;
+}
 
 .heading{
 font-size: 25px;
@@ -1203,7 +1207,18 @@ input[type="checkbox"]:checked:before{
 }
 
 
-
+.dialog2 {
+  height: 400px;
+}
+.dia2-sup{
+  text-align: center;
+}
+.sup-email{
+  text-decoration: underline;    
+}
+.dia2-btn{
+  margin-top: 10%;
+}
 @media (max-width: 750px) {
   .form-group label {
     display: none;
