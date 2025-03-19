@@ -5,6 +5,32 @@ const bcrypt = require("bcrypt");
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 
+// 1. Log-Schema definieren
+const LogSchema = new mongoose.Schema({
+    timestamp: { type: Date, default: Date.now },
+    userId: mongoose.Schema.Types.ObjectId,
+    username: String,
+    action: String,
+    details: String
+});
+
+const Log = mongoose.model('Log', LogSchema);
+
+// 2. Hilfsfunktion für Logging
+async function logUserAction(req, user, action, details = '') {
+    try {
+        const logEntry = new Log({
+            userId: user?._id || null,
+            username: user?.username || 'unknown',
+            action,
+            details
+        });
+        await logEntry.save();
+    } catch (err) {
+        console.error('Fehler beim Logging:', err);
+    }
+}
+
 const mongoURI = 'mongodb://webengineering.ins.hs-anhalt.de:10043/testdb';
 const UserSchema = new mongoose.Schema({
     username: String,
@@ -29,20 +55,20 @@ const app = express();
 const EXP_PORT = 10045;
 
 app.use(
-  session({
-    secret: "geheimes-passwort",
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl: mongoURI,
-      ttl: 14 * 24 * 60 * 60 // 14 Tage
-    }),
-    cookie: {
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 1000 * 60 * 60 * 24 // 24 Stunden
-    }
-  })
+    session({
+        secret: "geheimes-passwort",
+        resave: false,
+        saveUninitialized: false,
+        store: MongoStore.create({
+            mongoUrl: mongoURI,
+            ttl: 14 * 24 * 60 * 60 // 14 Tage
+        }),
+        cookie: {
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 1000 * 60 * 60 * 24 // 24 Stunden
+        }
+    })
 );
 
 app.use(express.json());
@@ -111,13 +137,15 @@ app.post("/register", async (req, res) => {
         return res.status(400).json({
             error: true,
             message: "Username existiert bereits. Bitte wähle einen anderen!",
-          });
+        });
     }
     try {
         const newUser = new User({ username });
         await User.register(newUser, password);
+        await logUserAction(req, newUser, 'REGISTRATION', 'Neuer Benutzer registriert');
         res.json({ message: "Erfolgreich registriert!" });
     } catch (err) {
+        await logUserAction(req, null, 'REGISTRATION_ERROR', err.message);
         res.status(500).json({ message: "Registrierung fehlgeschlagen!", error: err.message });
     }
 });
@@ -128,15 +156,17 @@ app.post("/login", passport.authenticate("local"), (req, res) => {
     if (!username || !password) {
         return res.status(400).json({ message: "Bitte alle Felder ausfüllen!" });
     }
+    logUserAction(req, req.user, 'LOGIN', 'Erfolgreicher Login');
     res.json({ message: "Login erfolgreich", user: req.user });
 
 });
 
 app.get("/logout", (req, res, next) => {
+    const user = req.user;
     req.logout(function(err) {
         if (err) return next(err);
-        req.session.destroy((err) => {
-            if (err) return next(err);
+        req.session.destroy(async (err) => {
+            await logUserAction(req, user, 'LOGOUT');
             res.json({ message: "Logout erfolgreich" });
         });
     });
@@ -161,7 +191,7 @@ app.post('/favorites', async (req, res) => {
     }
 
     if (!Array.isArray(user.favorites)) {
-        user.favorites = [];
+        user.favorites =[];
     }
 
     if (!user.favorites.includes(podcastId)) {
@@ -187,8 +217,8 @@ app.delete('/favorites/:podcastId', async (req, res) => {
     try {
         // Entferne podcastId aus dem favorites-Array
         const result = await User.updateOne(
-            { _id: req.user._id }, 
-            { $pull: { favorites: podcastId } } 
+            { _id: req.user._id },
+            { $pull: { favorites: podcastId } }
         );
 
         // Überprüfung
@@ -210,17 +240,18 @@ app.put('/user/username', isLoggedIn, async (req, res) => {
     if (!newUsername) {
         return res.status(400).json({ message: 'Neuer Benutzername ist erforderlich' });
     }
-   
+
     try {
         prüf = await User.findOne({ username: newUsername });
         if(prüf){
             return res.status(400).json({
                 error: true,
                 message: "Username existiert bereits. Bitte wähle einen anderen!",
-              });
+            });
         }
         // Aktualisiere den Benutzernamen
         const user = await User.findById(req.user._id);
+        const oldUsername = user.username;
 
         if (!user) {
             return res.status(404).json({ message: 'Benutzer nicht gefunden' });
@@ -228,6 +259,8 @@ app.put('/user/username', isLoggedIn, async (req, res) => {
 
         user.username = newUsername;
         await user.save();
+        await logUserAction(req, user, 'USERNAME_CHANGE',
+            `Geändert von ${oldUsername} zu ${newUsername}`);
 
         // Aktualisiere die Session des Benutzers
         req.login(user, (err) => {
@@ -238,6 +271,7 @@ app.put('/user/username', isLoggedIn, async (req, res) => {
         });
 
     } catch (err) {
+        await logUserAction(req, req.user, 'USERNAME_CHANGE_ERROR', err.message);
         res.status(500).json({ message: 'Fehler beim Ändern des Benutzernamens', error: err.message });
     }
 });
@@ -265,8 +299,10 @@ app.put('/user/password', isLoggedIn, async (req, res) => {
         });
 
         await user.save();
+        await logUserAction(req, req.user, 'PASSWORD_CHANGE');
         res.json({ message: 'Passwort erfolgreich geändert' });
     } catch (err) {
+        await logUserAction(req, req.user, 'PASSWORD_CHANGE_ERROR', err.message);
         res.status(500).json({ message: 'Fehler beim Ändern des Passworts', error: err.message });
     }
 });
@@ -283,35 +319,38 @@ app.listen(EXP_PORT, () => {
 // Account löschen
 app.delete('/user/delete', isLoggedIn, async (req, res) => {
     try {
-      // 3. Session ZUERST zerstören
-      req.session.destroy(async (err) => {
-        if (err) throw err;
-  
-        // 4. User löschen
-        const deletedUser = await User.findByIdAndDelete(req.user._id);
-        if (!deletedUser) return res.status(404).json({ message: 'User not found' });
-  
-        // 5. Session aus Store löschen
-        await req.sessionStore.destroy(req.sessionID);
-  
-        // 6. Cookie löschen
-        res.clearCookie('connect.sid', {
-          path: '/',
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production'
+        const user = req.user;
+        // 3. Session ZUERST zerstören
+        req.session.destroy(async (err) => {
+            if (err) throw err;
+
+            // 4. User löschen
+            const deletedUser = await User.findByIdAndDelete(req.user._id);
+            if (!deletedUser) return res.status(404).json({ message: 'User not found' });
+
+            // 5. Session aus Store löschen
+            await req.sessionStore.destroy(req.sessionID);
+
+            // 6. Cookie löschen
+            res.clearCookie('connect.sid', {
+                path: '/',
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production'
+            });
+
+            await logUserAction(req, user, 'ACCOUNT_DELETION');
+            res.json({ message: 'Account erfolgreich gelöscht' });
         });
-  
-        res.json({ message: 'Account erfolgreich gelöscht' });
-      });
-  
+
     } catch (err) {
-      console.error('Delete error:', err);
-      res.status(500).json({ 
-        message: 'Server error',
-        error: err.message // Detaillierte Fehlermeldung
-      });
+        await logUserAction(req, req.user, 'ACCOUNT_DELETION_ERROR', err.message);
+        console.error('Delete error:', err);
+        res.status(500).json({
+            message: 'Server error',
+            error: err.message // Detaillierte Fehlermeldung
+        });
     }
-  });
+});
 
 // Ersetze die bestehende /progress-Route durch diese erweiterte Version
 app.post('/progress', async (req, res) => {
@@ -335,7 +374,7 @@ app.post('/progress', async (req, res) => {
 
         // Update oder erstelle Progress-Eintrag
         const existingIndex = user.progress.findIndex(p => p.episodeId === episodeId);
-        
+
         if (existingIndex > -1) {
             user.progress[existingIndex].timestamp = timestamp;
         } else {
@@ -343,15 +382,15 @@ app.post('/progress', async (req, res) => {
         }
 
         await user.save();
-        res.json({ 
+        res.json({
             message: "Fortschritt gespeichert",
             progress: user.progress.find(p => p.episodeId === episodeId)
         });
 
     } catch (err) {
-        res.status(500).json({ 
-            message: "Fehler beim Speichern des Fortschritts", 
-            error: err.message 
+        res.status(500).json({
+            message: "Fehler beim Speichern des Fortschritts",
+            error: err.message
         });
     }
 });
@@ -371,9 +410,22 @@ app.get('/progress', async (req, res) => {
         res.json({ timestamp: progress ? progress.timestamp : 0 });
 
     } catch (err) {
-        res.status(500).json({ 
-            message: "Fehler beim Laden des Fortschritts", 
-            error: err.message 
+        res.status(500).json({
+            message: "Fehler beim Laden des Fortschritts",
+            error: err.message
         });
+    }
+});
+
+// 4. Neue Route zum Abrufen der Logs (nur für Admin-Zwecke)
+app.get('/logs', isLoggedIn, async (req, res) => {
+    try {
+        const logs = await Log.find({})
+            .sort({ timestamp: -1 })
+            .limit(100)
+            .lean();
+        res.json(logs);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 });
