@@ -11,7 +11,7 @@ document.getElementById("changeUsernameButton").addEventListener("click", async 
   console.log("Gesendete Daten:", { newUsername });
 
   try {
-      const response = await fetch("http://localhost:10045/user/username", {
+      const response = await fetch("http://webengineering.ins.hs-anhalt.de:10045/user/username", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ newUsername }),
@@ -46,7 +46,7 @@ document.getElementById("changePasswortButton").addEventListener("click", async 
 
     console.log("Gesendete Daten:", { newPassword });
 
-    const response = await fetch("http://localhost:10045/user/password", {
+    const response = await fetch("http://webengineering.ins.hs-anhalt.de:10045/user/password", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ newPassword }),
@@ -70,7 +70,7 @@ document.getElementById("deleteAccountButton").addEventListener("click", async (
   if (!confirm("Account wirklich löschen?\nDiese Aktion ist unwiderruflich!")) return;
 
   try {
-    const response = await fetch("http://localhost:10045/user/delete", {
+    const response = await fetch("http://webengineering.ins.hs-anhalt.de:10045/user/delete", {
       method: "DELETE",
       credentials: "include",
       headers: {

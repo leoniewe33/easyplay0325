@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 
-// 1. Log-Schema definieren
 const LogSchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
     userId: mongoose.Schema.Types.ObjectId,
@@ -16,7 +15,6 @@ const LogSchema = new mongoose.Schema({
 
 const Log = mongoose.model('Log', LogSchema);
 
-// 2. Hilfsfunktion für Logging
 async function logUserAction(req, user, action, details = '') {
     try {
         const logEntry = new Log({
@@ -73,7 +71,7 @@ app.use(
 
 app.use(express.json());
 app.use(cors({
-    origin: "http://localhost:1234",
+    origin: ["https://webengineering.ins.hs-anhalt.de:10041","https://webengineering.ins.hs-anhalt.de","http://localhost:1234"],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
@@ -102,7 +100,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/src/index.html"));
 });
 
-
+//Alle Nutzer
 app.get('/users', async (req, res) => {
     try {
         const users = await User.find({});
@@ -112,6 +110,7 @@ app.get('/users', async (req, res) => {
     }
 });
 
+/*/ Alter Code
 app.post('/user', async (req, res) => {
     try {
         const { name, password } = req.body;
@@ -125,8 +124,9 @@ app.post('/user', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-});
+});*/
 
+//Registrieren
 app.post("/register", async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
@@ -150,6 +150,7 @@ app.post("/register", async (req, res) => {
     }
 });
 
+//Einloggen
 app.post("/login", passport.authenticate("local"), (req, res) => {
 
     const {username, password} = req.body;
@@ -161,6 +162,7 @@ app.post("/login", passport.authenticate("local"), (req, res) => {
 
 });
 
+// Ausloggen
 app.get("/logout", (req, res, next) => {
     const user = req.user;
     req.logout(function(err) {
@@ -172,6 +174,7 @@ app.get("/logout", (req, res, next) => {
     });
 });
 
+//Prüfen ob der Nutzer angemeldet ist
 app.get("/session", (req, res) => {
     if (req.isAuthenticated()) {
         res.json({ loggedIn: true, user: req.user });
@@ -180,6 +183,7 @@ app.get("/session", (req, res) => {
     }
 });
 
+// Favorit hinzufügen
 app.post('/favorites', async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).json({ message: "Nicht eingeloggt" });
 
@@ -202,6 +206,7 @@ app.post('/favorites', async (req, res) => {
     res.json({ message: "Favorit hinzugefügt", favorites: user.favorites });
 });
 
+// Favoriten für Nutzer erhalten
 app.get('/favorites', async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).json({ message: "Nicht eingeloggt" });
 
@@ -209,24 +214,21 @@ app.get('/favorites', async (req, res) => {
     res.json({ favorites: user.favorites });
 });
 
+// Favorit löschen
 app.delete('/favorites/:podcastId', async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).json({ message: "Nicht eingeloggt" });
 
     const podcastId = req.params.podcastId;
 
     try {
-        // Entferne podcastId aus dem favorites-Array
         const result = await User.updateOne(
             { _id: req.user._id },
             { $pull: { favorites: podcastId } }
         );
-
-        // Überprüfung
         if (result.modifiedCount === 0) {
             return res.status(404).json({ message: "Favorit nicht gefunden" });
         }
 
-        // 3. Gib die aktualisierten Favoriten zurück
         const updatedUser = await User.findById(req.user._id);
         res.json({ message: "Favorit entfernt", favorites: updatedUser.favorites });
     } catch (err) {
@@ -290,7 +292,6 @@ app.put('/user/password', isLoggedIn, async (req, res) => {
             return res.status(404).json({ message: 'Benutzer nicht gefunden' });
         }
 
-        // Verwende setPassword von passport-local-mongoose
         await new Promise((resolve, reject) => {
             user.setPassword(newPassword, (err) => {
                 if (err) reject(err);
@@ -320,18 +321,13 @@ app.listen(EXP_PORT, () => {
 app.delete('/user/delete', isLoggedIn, async (req, res) => {
     try {
         const user = req.user;
-        // 3. Session ZUERST zerstören
         req.session.destroy(async (err) => {
             if (err) throw err;
-
-            // 4. User löschen
             const deletedUser = await User.findByIdAndDelete(req.user._id);
             if (!deletedUser) return res.status(404).json({ message: 'User not found' });
 
-            // 5. Session aus Store löschen
             await req.sessionStore.destroy(req.sessionID);
 
-            // 6. Cookie löschen
             res.clearCookie('connect.sid', {
                 path: '/',
                 httpOnly: true,
@@ -352,7 +348,7 @@ app.delete('/user/delete', isLoggedIn, async (req, res) => {
     }
 });
 
-// Ersetze die bestehende /progress-Route durch diese erweiterte Version
+// Progress für eine Episode hinzufügen
 app.post('/progress', async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).json({ message: "Nicht eingeloggt" });
 
@@ -395,7 +391,7 @@ app.post('/progress', async (req, res) => {
     }
 });
 
-// Füge eine GET-Route für Progress hinzu
+//Progress der Podcast Folgen getten
 app.get('/progress', async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).json({ message: "Nicht eingeloggt" });
 
@@ -417,7 +413,7 @@ app.get('/progress', async (req, res) => {
     }
 });
 
-// 4. Neue Route zum Abrufen der Logs (nur für Admin-Zwecke)
+//Logs aus der API abrufbar
 app.get('/logs', isLoggedIn, async (req, res) => {
     try {
         const logs = await Log.find({})

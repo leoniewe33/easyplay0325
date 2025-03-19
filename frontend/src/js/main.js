@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function fetchFavourites()
 {
     try {
-        const response = await fetch('http://localhost:10045/favorites', {
+        const response = await fetch('http://webengineering.ins.hs-anhalt.de:10045/favorites', {
             credentials: 'include'
         });
 
@@ -446,7 +446,7 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
     }
    
   try{
-    const response = await fetch("http://localhost:10045/login", {
+    const response = await fetch("http://webengineering.ins.hs-anhalt.de:10045/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: user, password }),
@@ -491,7 +491,7 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
     const password = document.getElementById("reg-passwd").value;
   
     try {
-      const response = await fetch("http://localhost:10045/register", {
+      const response = await fetch("http://webengineering.ins.hs-anhalt.de:10045/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password })
@@ -505,7 +505,7 @@ document.getElementById("Anmeldung").addEventListener("click", async function (e
     }
   });
   async function checkLoginStatus() {
-    const response = await fetch("http://localhost:10045/session", { credentials: "include" });
+    const response = await fetch("http://webengineering.ins.hs-anhalt.de:10045/session", { credentials: "include" });
     const result = await response.json();
     profilePicture = document.getElementById("IconShow");
 
@@ -539,7 +539,7 @@ async function loadDropDownWithoutReg() {
     document.body.appendChild(dropdown);
 
     try {
-        const response = await fetch("http://localhost:10045/session", { credentials: "include" });
+        const response = await fetch("http://webengineering.ins.hs-anhalt.de:10045/session", { credentials: "include" });
         const data = await response.json();
 
         if (data.loggedIn) {

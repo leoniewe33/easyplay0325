@@ -1,6 +1,6 @@
 async function logoutUser() {
     try {
-        await fetch("http://localhost:10045/logout", { credentials: "include" });
+        await fetch("http://webengineering.ins.hs-anhalt.de:10045/logout", { credentials: "include" });
         document.cookie = "connect.sid=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT";
         setTimeout(() => {
             window.location.href = "/index.html";
