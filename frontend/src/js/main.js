@@ -413,6 +413,15 @@ document.addEventListener('DOMContentLoaded', function () {
 			document.getElementById("dialog")
 				.close();
 		});
+        document.getElementById("close-dialog4")
+        .addEventListener("click", () => {
+            document.getElementById("dialog2").close();
+        });
+
+    document.getElementById("close-dialog5")
+        .addEventListener("click", () => {
+            document.getElementById("dialog2").close();
+        });
 });
 
 document.getElementById("showRegister").addEventListener("click", function(event) {
@@ -424,6 +433,12 @@ document.getElementById("showLogin").addEventListener("click", function(event) {
     event.preventDefault();
     document.querySelector(".form-wrapper").classList.remove("switch-right");
 });
+document.getElementById("showKennwort").addEventListener("click", function(event) {
+    event.preventDefault();
+    document.querySelector(".form-wrapper-2").closest("dialog").showModal();
+});
+
+
 
 let count= 0;
 let isBlocked = false;  
